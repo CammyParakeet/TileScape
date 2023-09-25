@@ -14,17 +14,43 @@ import java.util.UUID;
  * TODO
  */
 public interface GameManager {
-    
+
+    /**
+     * Initializes game manager
+     */
     void onEnable();
 
-    void buildGame(@NotNull UUID p1, @NotNull UUID p2);
+    /**
+     * Builds a new game session for two players identified by UUIDs.
+     *
+     * @param pID1 The unique ID of the first player.
+     * @param pID2 The unique ID of the second player.
+     */
+    void buildGame(@NotNull UUID pID1, @NotNull UUID pID2);
 
-    void registerGame();
+    /**
+     * Registers a new game session to the managers active games.
+     * @param game The game to register.
+     */
+    void registerGame(@NotNull Object game);
 
+    /**
+     * Checks if a player, using UUID, is in an active game session.
+     *
+     * @param pID The unique ID of the player.
+     * @return True if player in game, otherwise false.
+     */
     boolean isPlayerInGame(UUID pID);
 
-    void endGame();
+    /**
+     * Ends the game session.
+     * @param game The game to end.
+     */
+    void endGame(@NotNull Object game);
 
+    /**
+     * Deactivates game manager
+     */
     void onDisable();
 
 }
