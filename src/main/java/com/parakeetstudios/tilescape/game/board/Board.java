@@ -1,6 +1,10 @@
 package com.parakeetstudios.tilescape.game.board;
 
+import com.parakeetstudios.tilescape.game.piece.Piece;
 import org.bukkit.Location;
+
+import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * @author Cammy
@@ -20,12 +24,12 @@ public interface Board {
     /**
      * Gets the origin point of the board in the Minecraft world.
      *
-     * @return The Location of the origin point.
+     * @return The {@link Location} of the origin point.
      */
     Location getMinecraftOrigin();
 
     /**
-     * Retrieves the side-length size of the game board.
+     * Gets the side-length size of the game board.
      *
      * @return The side-length size of the board.
      */
@@ -38,7 +42,21 @@ public interface Board {
      */
     boolean attemptMove();
 
-    // piece methods
+    /**
+     * Tries to get the piece located at the specific {@link BoardPosition}.
+     *
+     * @param pos The position on the board to check for a piece.
+     * @return An optional for a {@link Piece}.
+     */
+    Optional<Piece> getPieceAt(BoardPosition pos);
+
+    /**
+     * Performs the given action for each piece on the board.
+     *
+     * @param action The action to be performed on each {@link Piece}.
+     */
+    void forEachPiece(Consumer<Piece> action);
+
 
     /**
      * Resets the board to initial state.
