@@ -41,7 +41,7 @@ public interface GameManager {
      * @param pID The unique ID of the player.
      * @return True if player in game, otherwise false.
      */
-    boolean isPlayerInGame(UUID pID);
+    boolean isPlayerInGame(@NotNull UUID pID);
 
     /**
      * Ends the game session.
