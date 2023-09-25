@@ -8,6 +8,10 @@ import com.parakeetstudios.tilescape.TilescapePlugin;
  * @version 1.0
  */
 
+
+/**
+ * TODO
+ */
 public class TilescapeModule extends AbstractModule {
 
     private final TilescapePlugin plugin;

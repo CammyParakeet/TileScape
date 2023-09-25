@@ -19,13 +19,14 @@ public class TilescapePlugin extends JavaPlugin {
 
     @Override
     public void onLoad() {
+        Paralog.init(getLogger());
         injector = Guice.createInjector(new TilescapeModule(this));
     }
 
 
     @Override
     public void onEnable() {
-        Paralog.init(getLogger());
+        Paralog.info(getName() + " is starting...");
 
         //TODO
     }
@@ -33,7 +34,7 @@ public class TilescapePlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
+        Paralog.info(getName() + " is shutting down...");
     }
 
 
