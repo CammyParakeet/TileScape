@@ -1,5 +1,6 @@
 package com.parakeetstudios.tilescape.managers;
 
+import com.parakeetstudios.tilescape.game.BoardGame;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -32,7 +33,7 @@ public interface GameManager {
      * Registers a new game session to the managers active games.
      * @param game The game to register.
      */
-    void registerGame(@NotNull Object game);
+    void registerGame(@NotNull BoardGame game);
 
     /**
      * Checks if a player, using UUID, is in an active game session.
@@ -46,7 +47,7 @@ public interface GameManager {
      * Ends the game session.
      * @param game The game to end.
      */
-    void endGame(@NotNull Object game);
+    void endGame(@NotNull BoardGame game);
 
     /**
      * Deactivates game manager
