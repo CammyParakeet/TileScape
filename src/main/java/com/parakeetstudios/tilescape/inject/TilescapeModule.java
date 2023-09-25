@@ -2,6 +2,7 @@ package com.parakeetstudios.tilescape.inject;
 
 import com.google.inject.AbstractModule;
 import com.parakeetstudios.tilescape.TilescapePlugin;
+import com.parakeetstudios.tilescape.managers.GameManager;
 
 /**
  * @author Cammy
@@ -23,6 +24,7 @@ public class TilescapeModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(TilescapePlugin.class).toInstance(plugin);
+        bind(GameManager.class).asEagerSingleton();
     }
 
 }

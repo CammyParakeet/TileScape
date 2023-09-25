@@ -1,9 +1,11 @@
 package com.parakeetstudios.tilescape;
 
 import com.google.inject.Guice;
+import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import com.parakeetstudios.tilescape.inject.TilescapeModule;
+import com.parakeetstudios.tilescape.managers.GameManager;
 import com.parakeetstudios.tilescape.utils.Paralog;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -16,6 +18,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class TilescapePlugin extends JavaPlugin {
 
     private Injector injector;
+
+    @Inject
+    private GameManager gameManager;
 
     @Override
     public void onLoad() {
