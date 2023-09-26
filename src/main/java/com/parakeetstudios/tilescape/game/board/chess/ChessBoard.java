@@ -56,16 +56,29 @@ public class ChessBoard implements Board {
     }
 
     private void buildFEN() {
-        String setup = cfg.getDefaultChessSetup();
+        String fen = cfg.getDefaultChessSetup();
 
+        int rank = WIDTH;
+        int file = 1;
 
-
+        for (char c : fen.toCharArray()) {
+            if (Character.isDigit(c)) {
+                file += Character.getNumericValue(c); // skip # of files
+            } else if (c == '/') {
+                rank --;  // lower the rank
+                file = 1; // reset the file
+            } else {
+                // this means it's a piece
+                setPiece(c, file, rank);
+                file++;
+            }
+        }
     }
 
-    private void setPiece(int file, int rank) {
-        ChessPiece piece = new ChessPiece();
+    private void setPiece(char type, int file, int rank) {
+        ChessPiece piece = new ChessPiece(type);
         pieces[file][rank] = piece;
-        //piece.spawnAt();
+        //piece.spawnAt(); TODO method to convert boardpos to mc location
     }
 
 

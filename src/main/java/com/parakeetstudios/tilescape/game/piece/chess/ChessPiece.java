@@ -17,7 +17,7 @@ public class ChessPiece implements Piece {
     private Entity marker; // possibly needed for interaction?
     private Entity model;
 
-    public ChessPiece() {
+    public ChessPiece(char type) {
         //TODO
     }
 
