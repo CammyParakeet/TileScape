@@ -42,7 +42,7 @@ public interface Board {
      *
      * @return True if the move was successful, otherwise false.
      */
-    boolean attemptMove();
+    boolean attemptMove(BoardPosition from, BoardPosition to);
 
     /**
      * Tries to get the piece located at the specific {@link BoardPosition}.

@@ -27,15 +27,6 @@ public class ChessBoard implements Board {
         this.pieces = new ChessPiece[WIDTH][WIDTH];
     }
 
-    /**
-     * Board Setup
-     */
-
-    @Override
-    public void build() {
-
-    }
-
     @Override
     public Location getMinecraftOrigin() {
         return this.minecraftOrigin;
@@ -47,12 +38,44 @@ public class ChessBoard implements Board {
     }
 
     /**
+     * Board Setup
+     */
+
+    @Override
+    public void build() {
+
+    }
+
+    private void setPiece(int file, int rank) {
+        ChessPiece piece = new ChessPiece();
+        pieces[file][rank] = piece;
+        //piece.spawnAt();
+    }
+
+
+    /**
      *  Move management
      */
 
     @Override
-    public boolean attemptMove() {
-        return false;
+    public boolean attemptMove(BoardPosition from, BoardPosition to) {
+        ChessPiece pieceToMove = (ChessPiece) getPieceAt(from).orElse(null);
+        ChessPiece pieceToTake = (ChessPiece) getPieceAt(to).orElse(null);
+
+        //TODO move validation
+
+        pieces[to.file()][to.rank()] = pieceToMove;
+        pieces[from.file()][from.rank()] = null;
+
+        //pieceToMove.moveTo();
+
+        // Handle capturing
+        if (pieceToTake != null) {
+            //TODO handle
+            return true;
+        }
+        
+        return true;
     }
 
 
