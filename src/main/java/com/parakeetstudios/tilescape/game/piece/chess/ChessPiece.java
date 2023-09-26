@@ -1,6 +1,9 @@
 package com.parakeetstudios.tilescape.game.piece.chess;
 
+import com.parakeetstudios.tilescape.core.piece.PieceType;
 import com.parakeetstudios.tilescape.game.piece.Piece;
+import com.parakeetstudios.tilescape.game.piece.PieceColor;
+import com.parakeetstudios.tilescape.game.piece.SimplePieceColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
@@ -12,13 +15,14 @@ import org.jetbrains.annotations.NotNull;
 
 public class ChessPiece implements Piece {
 
-    //private final PieceType type; TODO
-    //private final PieceColor color; TODO
+    //private final PieceType type;
+    private final PieceColor color;
     private Entity marker; // possibly needed for interaction?
     private Entity model;
 
-    public ChessPiece(char type) {
-        //TODO
+    public ChessPiece(char type, PieceColor color) {
+        this.color = color;
+        //this.type = ?;
     }
 
     @Override

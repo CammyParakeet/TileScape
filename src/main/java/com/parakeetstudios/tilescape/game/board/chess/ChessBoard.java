@@ -5,6 +5,8 @@ import com.parakeetstudios.tilescape.data.TilescapeConfig;
 import com.parakeetstudios.tilescape.game.board.Board;
 import com.parakeetstudios.tilescape.game.board.BoardPosition;
 import com.parakeetstudios.tilescape.game.piece.Piece;
+import com.parakeetstudios.tilescape.game.piece.PieceColor;
+import com.parakeetstudios.tilescape.game.piece.SimplePieceColor;
 import com.parakeetstudios.tilescape.game.piece.chess.ChessPiece;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
@@ -76,7 +78,10 @@ public class ChessBoard implements Board {
     }
 
     private void setPiece(char type, int file, int rank) {
-        ChessPiece piece = new ChessPiece(type);
+        // determine whether white or black
+        PieceColor color = Character.isUpperCase(type) ? SimplePieceColor.WHITE : SimplePieceColor.BLACK;
+
+        ChessPiece piece = new ChessPiece(type, color);
         pieces[file][rank] = piece;
         //piece.spawnAt(); TODO method to convert boardpos to mc location
     }
