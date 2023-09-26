@@ -31,6 +31,8 @@ public class TilescapePlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        saveDefaultConfig();
+
         Paralog.info(getName() + " is starting...");
 
         //TODO

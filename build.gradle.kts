@@ -18,6 +18,7 @@ repositories {
 
 dependencies {
     implementation("com.google.inject:guice:6.0.0")
+    implementation("com.google.inject.extensions:guice-assistedinject:4.2.3")
     compileOnly("org.projectlombok:lombok:1.18.20")
     compileOnly("org.projectlombok:lombok:1.18.20")
     paperweight.paperDevBundle("1.20.1-R0.1-SNAPSHOT")

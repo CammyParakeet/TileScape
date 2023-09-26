@@ -1,10 +1,11 @@
 package com.parakeetstudios.tilescape.game.board.chess;
 
+import com.google.inject.Inject;
+import com.parakeetstudios.tilescape.data.TilescapeConfig;
 import com.parakeetstudios.tilescape.game.board.Board;
 import com.parakeetstudios.tilescape.game.board.BoardPosition;
 import com.parakeetstudios.tilescape.game.piece.Piece;
 import com.parakeetstudios.tilescape.game.piece.chess.ChessPiece;
-import lombok.Getter;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,13 +19,17 @@ import java.util.function.Consumer;
 
 public class ChessBoard implements Board {
 
+    private final TilescapeConfig cfg;
+
     private final int WIDTH = 8; //TODO allow config
     private final Location minecraftOrigin;
     private final Piece[][] pieces;
 
-    public ChessBoard(Location origin) {
+    @Inject
+    public ChessBoard(@NotNull Location origin, @NotNull TilescapeConfig cfg) {
         this.minecraftOrigin = origin;
         this.pieces = new ChessPiece[WIDTH][WIDTH];
+        this.cfg = cfg;
     }
 
     @Override
@@ -43,6 +48,17 @@ public class ChessBoard implements Board {
 
     @Override
     public void build() {
+        //TODO setup config
+        switch (cfg.getDefaultChessStateNotation()) {
+            case "FEN" -> buildFEN();
+            case "other?" -> {}
+        }
+    }
+
+    private void buildFEN() {
+        String setup = cfg.getDefaultChessSetup();
+
+
 
     }
 
@@ -58,7 +74,7 @@ public class ChessBoard implements Board {
      */
 
     @Override
-    public boolean attemptMove(BoardPosition from, BoardPosition to) {
+    public boolean attemptMove(@NotNull BoardPosition from, @NotNull BoardPosition to) {
         ChessPiece pieceToMove = (ChessPiece) getPieceAt(from).orElse(null);
         ChessPiece pieceToTake = (ChessPiece) getPieceAt(to).orElse(null);
 
@@ -74,7 +90,7 @@ public class ChessBoard implements Board {
             //TODO handle
             return true;
         }
-        
+
         return true;
     }
 
