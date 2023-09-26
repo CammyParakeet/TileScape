@@ -1,7 +1,9 @@
 package com.parakeetstudios.tilescape.game.board;
 
 import com.parakeetstudios.tilescape.game.piece.Piece;
+import lombok.Getter;
 import org.bukkit.Location;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -48,7 +50,7 @@ public interface Board {
      * @param pos The position on the board to check for a piece.
      * @return An optional for a {@link Piece}.
      */
-    Optional<Piece> getPieceAt(BoardPosition pos);
+    Optional<Piece> getPieceAt(@NotNull BoardPosition pos);
 
     /**
      * Performs the given action for each piece on the board.
@@ -67,5 +69,29 @@ public interface Board {
      * Cleans up the board and releases associations.
      */
     void destroy();
+
+    /**
+     * Represents directions on the tile board.
+     * Each direction is associated with changes in rank and file coordinates.
+     */
+    enum Direction {
+        LEFT_FILE(-1, 0),
+        RIGHT_FILE(1, 0),
+        UP_RANK(0, 1),
+        DOWN_RANK(0, -1),
+        UP_RIGHT(1, 1),
+        UP_LEFT(1, -1),
+        DOWN_RIGHT(-1, 1),
+        DOWN_LEFT(-1, -1);
+
+        @Getter
+        private final int deltaFile, deltaRank;
+
+        Direction(int dFile, int dRank) {
+            this.deltaFile = dFile;
+            this.deltaRank = dRank;
+        }
+
+    }
 
 }

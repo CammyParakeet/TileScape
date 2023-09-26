@@ -12,4 +12,5 @@ public record BoardPosition(int file, int rank) {
         return new BoardPosition(0,0);
     }
 
+
 }

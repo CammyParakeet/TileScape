@@ -1,6 +1,7 @@
 package com.parakeetstudios.tilescape.game.piece;
 
 import org.bukkit.Location;
+import org.jetbrains.annotations.NotNull;
 
 public interface Piece {
 
@@ -12,9 +13,9 @@ public interface Piece {
      *  Minecraft Logic
      */
 
-    void spawnAt(Location location);
+    void spawnAt(@NotNull Location location);
 
-    void moveTo(Location location);
+    void moveTo(@NotNull Location location);
 
     void remove();
 
