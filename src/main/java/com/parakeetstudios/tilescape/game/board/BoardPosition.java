@@ -1,6 +1,9 @@
 package com.parakeetstudios.tilescape.game.board;
 
-import org.jetbrains.annotations.NotNull;
+/**
+ * @author Cammy
+ * @version 1.0
+ */
 
 public record BoardPosition(int file, int rank) {
 

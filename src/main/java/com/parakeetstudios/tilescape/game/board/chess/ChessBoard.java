@@ -3,12 +3,18 @@ package com.parakeetstudios.tilescape.game.board.chess;
 import com.parakeetstudios.tilescape.game.board.Board;
 import com.parakeetstudios.tilescape.game.board.BoardPosition;
 import com.parakeetstudios.tilescape.game.piece.Piece;
+import com.parakeetstudios.tilescape.game.piece.chess.ChessPiece;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.function.Consumer;
+
+/**
+ * @author Cammy
+ * @version 1.0
+ */
 
 public class ChessBoard implements Board {
 
@@ -18,7 +24,7 @@ public class ChessBoard implements Board {
 
     public ChessBoard(Location origin) {
         this.minecraftOrigin = origin;
-        this.pieces = new Piece[WIDTH][WIDTH];
+        this.pieces = new ChessPiece[WIDTH][WIDTH];
     }
 
     /**
