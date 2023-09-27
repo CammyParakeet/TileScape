@@ -4,6 +4,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Names;
 import com.parakeetstudios.tilescape.TilescapePlugin;
 import com.parakeetstudios.tilescape.core.piece.PieceController;
@@ -14,6 +15,7 @@ import com.parakeetstudios.tilescape.game.board.chess.ChessBoard;
 import com.parakeetstudios.tilescape.game.piece.Piece;
 import com.parakeetstudios.tilescape.game.piece.chess.ChessPiece;
 import com.parakeetstudios.tilescape.managers.GameManager;
+import com.parakeetstudios.tilescape.managers.chess.ChessGameManager;
 
 /**
  * @author Cammy
@@ -36,8 +38,11 @@ public class TilescapeModule extends AbstractModule {
     protected void configure() {
         // create single plugin instance
         bind(TilescapePlugin.class).toInstance(plugin);
-        // bind eager game manager
-        bind(GameManager.class).asEagerSingleton();
+        // bind game manager
+        bind(GameManager.class);
+
+        Multibinder<GameManager> gameManagerBinder = Multibinder.newSetBinder(binder(), GameManager.class);
+        gameManagerBinder.addBinding().to(ChessGameManager.class);
 
         // Board Factory builder
         install(new FactoryModuleBuilder()
@@ -59,6 +64,7 @@ public class TilescapeModule extends AbstractModule {
                 .build(PieceControllerFactory.class));
     }
 
+    // Provide a single config wrapper instance to our classes
     @Provides @Singleton
     TilescapeConfig provideConfig() {
         return new TilescapeConfig(plugin.getConfig());

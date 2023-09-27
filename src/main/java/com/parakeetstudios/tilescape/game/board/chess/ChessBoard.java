@@ -32,12 +32,12 @@ public class ChessBoard implements Board {
     @Inject
     public ChessBoard(@NotNull Location origin,
                       @NotNull PieceFactory pieceFactory,
-                      @NotNull TilescapeConfig cfg) {
+                      @NotNull TilescapeConfig cfg)
+    {
         this.pieceFactory = pieceFactory;
         this.cfg = cfg;
         this.minecraftOrigin = origin;
         this.pieces = new ChessPiece[WIDTH][WIDTH];
-
     }
 
     @Override

@@ -15,7 +15,7 @@ public abstract class GamePiece implements Piece {
 
     protected final char symbol;
     protected final PieceColor color;
-    protected PieceController type;
+    protected PieceController controller;
     protected Entity marker; // possibly needed for interaction?
     protected Entity model;
 
@@ -23,7 +23,8 @@ public abstract class GamePiece implements Piece {
     public GamePiece(char symbol,
                      PieceColor color,
                      TilescapeConfig cfg,
-                     PieceControllerFactory pieceTypeFactory) {
+                     PieceControllerFactory pieceTypeFactory)
+    {
         this.symbol = symbol;
         this.color = color;
         this.cfg = cfg;
@@ -31,12 +32,12 @@ public abstract class GamePiece implements Piece {
     }
 
     protected void determineType(String gameModelType) {
-        this.type = pieceTypeFactory.createType(gameModelType, symbol, color);
+        this.controller = pieceTypeFactory.createType(gameModelType, symbol, color);
     }
 
     @Override
     public void spawnAt(@NotNull Location location) {
-        model = type.spawnModel(location, color);
+        model = controller.spawnModel(location, color);
     }
 
     @Override

@@ -115,16 +115,5 @@ public enum ChessDebugController implements PieceController {
         return model;
     }
 
-    /**
-     * Conversion map
-     */
-    private static final Map<Character, ChessDebugController> SYMBOL_TO_TYPE;
-
-    static {
-        SYMBOL_TO_TYPE = new HashMap<>();
-        for (ChessDebugController type : ChessDebugController.values()) {
-            SYMBOL_TO_TYPE.put(type.getSymbol(), type);
-        }
-    }
 
 }

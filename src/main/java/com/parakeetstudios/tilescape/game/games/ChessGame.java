@@ -7,28 +7,32 @@ import com.parakeetstudios.tilescape.inject.BoardFactory;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 public class ChessGame implements BoardGame {
 
+    private final UUID gameID;
+    private final Board board;
+
     @Inject
-    private BoardFactory boardFactory;
-
-
-    public ChessGame(@NotNull Location gameLocation, BoardFactory boardFactory) {
-        this.boardFactory = boardFactory;
-        Board board = this.boardFactory.createBoard("chess", gameLocation);
+    public ChessGame(@NotNull List<UUID> players,
+                     @NotNull Location gameLocation,
+                     @NotNull BoardFactory boardFactory)
+    {
+        this.gameID = UUID.randomUUID();
+        this.board = boardFactory.createBoard("chess", gameLocation);
     }
 
     @Override
     public void build() {
-
+        board.build();
     }
 
     @Override
     public UUID getGameID() {
-        return null;
+        return gameID;
     }
 
     @Override

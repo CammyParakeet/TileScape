@@ -14,12 +14,7 @@ import java.util.UUID;
 /**
  * TODO
  */
-public interface GameManager {
-
-    /**
-     * Initializes game manager
-     */
-    void onEnable();
+public interface GameManager extends Manager {
 
     /**
      * Builds a new game session for two players identified by UUIDs.
@@ -49,9 +44,5 @@ public interface GameManager {
      */
     void endGame(@NotNull BoardGame game);
 
-    /**
-     * Deactivates game manager
-     */
-    void onDisable();
 
 }

@@ -9,6 +9,8 @@ import com.parakeetstudios.tilescape.managers.GameManager;
 import com.parakeetstudios.tilescape.utils.Paralog;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Set;
+
 /**
  * @author Cammy
  * @version 1.0
@@ -17,10 +19,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 @Singleton
 public class TilescapePlugin extends JavaPlugin {
 
+    @Inject
     private Injector injector;
 
     @Inject
-    private GameManager gameManager;
+    private Set<GameManager> gameManagers;
 
     @Override
     public void onLoad() {
@@ -32,8 +35,12 @@ public class TilescapePlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
+        reloadConfig();
 
         Paralog.info(getName() + " is starting...");
+
+        // iterate over managers to enable
+        gameManagers.forEach(GameManager::onEnable);
 
         //TODO
     }
