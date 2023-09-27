@@ -22,7 +22,7 @@ public class ChessGame implements BoardGame {
                      @NotNull BoardFactory boardFactory)
     {
         this.gameID = UUID.randomUUID();
-        this.board = boardFactory.createBoard("chess", gameLocation);
+        this.board = boardFactory.createBoard(gameLocation);
     }
 
     @Override

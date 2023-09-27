@@ -1,2 +1,2 @@
-rootProject.name = "TileScape"
+rootProject.name = "TilescapePlugin"
 

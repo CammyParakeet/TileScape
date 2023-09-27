@@ -24,4 +24,7 @@ public class TilescapeConfig {
 
     public String getChessModelType() { return cfg.getString("CHESS_MODEL_TYPE"); }
 
+    public String getShogiModelType() { return cfg.getString("SHOGI_MODEL_TYPE"); }
+
+
 }

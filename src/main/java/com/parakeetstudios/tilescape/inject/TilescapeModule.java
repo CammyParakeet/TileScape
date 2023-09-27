@@ -3,17 +3,15 @@ package com.parakeetstudios.tilescape.inject;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.multibindings.Multibinder;
-import com.google.inject.name.Names;
 import com.parakeetstudios.tilescape.TilescapePlugin;
-import com.parakeetstudios.tilescape.core.piece.PieceController;
-import com.parakeetstudios.tilescape.core.piece.chess.ChessDebugController;
+import com.parakeetstudios.tilescape.core.piece.chess.DebugChessSpawner;
 import com.parakeetstudios.tilescape.data.TilescapeConfig;
-import com.parakeetstudios.tilescape.game.board.Board;
 import com.parakeetstudios.tilescape.game.board.chess.ChessBoard;
-import com.parakeetstudios.tilescape.game.piece.Piece;
 import com.parakeetstudios.tilescape.game.piece.chess.ChessPiece;
+import com.parakeetstudios.tilescape.game.piece.shogi.ShogiPiece;
 import com.parakeetstudios.tilescape.managers.GameManager;
 import com.parakeetstudios.tilescape.managers.chess.ChessGameManager;
 
@@ -21,7 +19,6 @@ import com.parakeetstudios.tilescape.managers.chess.ChessGameManager;
  * @author Cammy
  * @version 1.0
  */
-
 
 /**
  * TODO
@@ -38,30 +35,23 @@ public class TilescapeModule extends AbstractModule {
     protected void configure() {
         // create single plugin instance
         bind(TilescapePlugin.class).toInstance(plugin);
-        // bind game manager
-        bind(GameManager.class);
 
+        // bind game managers
         Multibinder<GameManager> gameManagerBinder = Multibinder.newSetBinder(binder(), GameManager.class);
         gameManagerBinder.addBinding().to(ChessGameManager.class);
 
-        // Board Factory builder
-        install(new FactoryModuleBuilder()
-                // bind chessboard
-                .implement(Board.class, Names.named("chess"), ChessBoard.class)
-                //.implement(Board.class, Names.named("shogi"), ShogiBoard.class) example
-                .build(BoardFactory.class));
 
-        // Piece Factory builder
-        install(new FactoryModuleBuilder()
-                .implement(Piece.class, Names.named("chess"), ChessPiece.class)
-                //.implement(Piece.class, Names.named("shogi"), ShogiPiece.class) example
-                .build(PieceFactory.class));
+        // bind board classes
+        install(new FactoryModuleBuilder().build(new TypeLiteral<BoardFactory<ChessBoard>>(){}));
 
-        // Piece Type Factory builder
-        install(new FactoryModuleBuilder()
-                .implement(PieceController.class, Names.named("chess_debug"), ChessDebugController.class)
-                //.implement(PieceController.class, Names.named("shogi_debug"), ShogiDebugController.class)
-                .build(PieceControllerFactory.class));
+        // bind piece classes
+        install(new FactoryModuleBuilder().build(new TypeLiteral<PieceFactory<ChessPiece>>(){}));
+        install(new FactoryModuleBuilder().build(new TypeLiteral<PieceFactory<ShogiPiece>>(){}));
+
+        //bind piece spawner
+        //install(new FactoryModuleBuilder().build(new TypeLiteral<PieceSpawnerFactory<DebugChessSpawner>>(){}));
+
+
     }
 
     // Provide a single config wrapper instance to our classes
@@ -69,5 +59,6 @@ public class TilescapeModule extends AbstractModule {
     TilescapeConfig provideConfig() {
         return new TilescapeConfig(plugin.getConfig());
     }
+
 
 }

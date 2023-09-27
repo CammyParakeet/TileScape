@@ -15,9 +15,12 @@ DEFAULT_CHESS_SETUP: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
 # - Algebraic
 DEFAULT_CHESS_MOVE_NOTATION: "Algebraic"
 
-# Model type for pieces - currently supported:
-# - Debug
-CHESS_MODEL_TYPE: "Debug"
+
+
+## Controller Mappings
+CONTROLLER_MAPPINGS:
+  chess_debug: "DebugChessSpawner"
+  chess_default: "DefaultChessSpawner"
 
 
 

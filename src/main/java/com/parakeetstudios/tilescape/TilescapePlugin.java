@@ -28,7 +28,12 @@ public class TilescapePlugin extends JavaPlugin {
     @Override
     public void onLoad() {
         Paralog.init(getLogger());
-        injector = Guice.createInjector(new TilescapeModule(this));
+        try {
+            injector = Guice.createInjector(new TilescapeModule(this));
+        } catch (Exception e) {
+            getLogger().severe("Failed to create Guice injector: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
 
@@ -36,6 +41,8 @@ public class TilescapePlugin extends JavaPlugin {
     public void onEnable() {
         saveDefaultConfig();
         reloadConfig();
+
+        //injector.injectMembers(this);
 
         Paralog.info(getName() + " is starting...");
 

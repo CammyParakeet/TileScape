@@ -5,7 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.joml.Vector3f;
 
-public interface PieceController {
+public interface PieceSpawner {
 
     char getSymbol();
     Entity spawnModel(Location location, PieceColor color);

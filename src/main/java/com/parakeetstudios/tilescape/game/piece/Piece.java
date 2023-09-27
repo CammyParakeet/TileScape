@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 public interface Piece {
 
-    // PieceController getType();
+    // PieceSpawner getType();
 
     // PieceColor getColor();
 

@@ -1,6 +1,7 @@
 package com.parakeetstudios.tilescape.game.board.chess;
 
 import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import com.parakeetstudios.tilescape.data.TilescapeConfig;
 import com.parakeetstudios.tilescape.game.board.Board;
 import com.parakeetstudios.tilescape.game.board.BoardPosition;
@@ -22,7 +23,7 @@ import java.util.function.Consumer;
 
 public class ChessBoard implements Board {
 
-    private final PieceFactory pieceFactory;
+    private final PieceFactory<ChessPiece> pieceFactory;
     private final TilescapeConfig cfg;
 
     private final int WIDTH = 8; //TODO allow config
@@ -30,8 +31,8 @@ public class ChessBoard implements Board {
     private final Piece[][] pieces;
 
     @Inject
-    public ChessBoard(@NotNull Location origin,
-                      @NotNull PieceFactory pieceFactory,
+    public ChessBoard(@Assisted @NotNull Location origin,
+                      @NotNull PieceFactory<ChessPiece> pieceFactory,
                       @NotNull TilescapeConfig cfg)
     {
         this.pieceFactory = pieceFactory;
@@ -87,7 +88,7 @@ public class ChessBoard implements Board {
         // determine whether white or black
         PieceColor color = Character.isUpperCase(symbol) ? SimplePieceColor.WHITE : SimplePieceColor.BLACK;
 
-        ChessPiece piece = (ChessPiece) pieceFactory.createPiece(symbol, color);
+        ChessPiece piece = pieceFactory.createPiece(symbol, color);
         pieces[file][rank] = piece;
         //piece.spawnAt(); TODO method to convert boardpos to mc location
     }

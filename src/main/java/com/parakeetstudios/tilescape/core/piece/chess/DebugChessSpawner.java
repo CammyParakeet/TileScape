@@ -1,6 +1,7 @@
 package com.parakeetstudios.tilescape.core.piece.chess;
 
-import com.parakeetstudios.tilescape.core.piece.PieceController;
+import com.google.inject.assistedinject.Assisted;
+import com.parakeetstudios.tilescape.core.piece.PieceSpawner;
 import com.parakeetstudios.tilescape.game.piece.PieceColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,10 +12,8 @@ import org.bukkit.util.Transformation;
 import org.joml.AxisAngle4f;
 import org.joml.Vector3f;
 
-import java.util.HashMap;
-import java.util.Map;
 
-public enum ChessDebugController implements PieceController {
+public enum DebugChessSpawner implements PieceSpawner {
 
     KING('K') {
         @Override
@@ -85,7 +84,7 @@ public enum ChessDebugController implements PieceController {
 
     private final char symbol;
 
-    ChessDebugController(char symbol) {
+    DebugChessSpawner(@Assisted char symbol) {
         this.symbol = symbol;
     }
 
@@ -113,6 +112,13 @@ public enum ChessDebugController implements PieceController {
         model.addScoreboardTag(""+symbol);
 
         return model;
+    }
+
+    public static DebugChessSpawner pieceFromSymbol(char symbol) {
+        for (DebugChessSpawner c : values()) {
+            if (c.getSymbol() == symbol) return c;
+        }
+        throw new IllegalArgumentException("No controller for piece: " + symbol);
     }
 
 

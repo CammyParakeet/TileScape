@@ -1,9 +1,8 @@
 package com.parakeetstudios.tilescape.game.piece;
 
-import com.google.inject.Inject;
-import com.parakeetstudios.tilescape.core.piece.PieceController;
+import com.parakeetstudios.tilescape.core.piece.PieceSpawner;
 import com.parakeetstudios.tilescape.data.TilescapeConfig;
-import com.parakeetstudios.tilescape.inject.PieceControllerFactory;
+import com.parakeetstudios.tilescape.inject.PieceSpawnerFactory;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
@@ -11,28 +10,26 @@ import org.jetbrains.annotations.NotNull;
 public abstract class GamePiece implements Piece {
 
     protected final TilescapeConfig cfg;
-    protected final PieceControllerFactory pieceTypeFactory;
+    //protected final PieceSpawnerFactory pieceTypeFactory;
 
     protected final char symbol;
     protected final PieceColor color;
-    protected PieceController controller;
+    protected PieceSpawner controller;
     protected Entity marker; // possibly needed for interaction?
     protected Entity model;
 
-    @Inject
     public GamePiece(char symbol,
-                     PieceColor color,
-                     TilescapeConfig cfg,
-                     PieceControllerFactory pieceTypeFactory)
+                     @NotNull PieceColor color,
+                     @NotNull TilescapeConfig cfg)
     {
         this.symbol = symbol;
         this.color = color;
         this.cfg = cfg;
-        this.pieceTypeFactory = pieceTypeFactory;
+        //this.pieceTypeFactory = pieceTypeFactory;
     }
 
     protected void determineType(String gameModelType) {
-        this.controller = pieceTypeFactory.createType(gameModelType, symbol, color);
+        //this.controller = pieceTypeFactory.createSpawner(symbol, color);
     }
 
     @Override
