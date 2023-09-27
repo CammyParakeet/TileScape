@@ -6,9 +6,13 @@ import com.google.inject.Singleton;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.name.Names;
 import com.parakeetstudios.tilescape.TilescapePlugin;
+import com.parakeetstudios.tilescape.core.piece.PieceController;
+import com.parakeetstudios.tilescape.core.piece.chess.ChessDebugController;
 import com.parakeetstudios.tilescape.data.TilescapeConfig;
 import com.parakeetstudios.tilescape.game.board.Board;
 import com.parakeetstudios.tilescape.game.board.chess.ChessBoard;
+import com.parakeetstudios.tilescape.game.piece.Piece;
+import com.parakeetstudios.tilescape.game.piece.chess.ChessPiece;
 import com.parakeetstudios.tilescape.managers.GameManager;
 
 /**
@@ -35,11 +39,24 @@ public class TilescapeModule extends AbstractModule {
         // bind eager game manager
         bind(GameManager.class).asEagerSingleton();
 
+        // Board Factory builder
         install(new FactoryModuleBuilder()
                 // bind chessboard
                 .implement(Board.class, Names.named("chess"), ChessBoard.class)
-                //.implement(Board.class, Names.named("idk something else?"), Something.class)
+                //.implement(Board.class, Names.named("shogi"), ShogiBoard.class) example
                 .build(BoardFactory.class));
+
+        // Piece Factory builder
+        install(new FactoryModuleBuilder()
+                .implement(Piece.class, Names.named("chess"), ChessPiece.class)
+                //.implement(Piece.class, Names.named("shogi"), ShogiPiece.class) example
+                .build(PieceFactory.class));
+
+        // Piece Type Factory builder
+        install(new FactoryModuleBuilder()
+                .implement(PieceController.class, Names.named("chess_debug"), ChessDebugController.class)
+                //.implement(PieceController.class, Names.named("shogi_debug"), ShogiDebugController.class)
+                .build(PieceControllerFactory.class));
     }
 
     @Provides @Singleton

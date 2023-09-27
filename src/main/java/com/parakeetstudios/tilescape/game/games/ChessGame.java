@@ -2,6 +2,7 @@ package com.parakeetstudios.tilescape.game.games;
 
 import com.google.inject.Inject;
 import com.parakeetstudios.tilescape.game.BoardGame;
+import com.parakeetstudios.tilescape.game.board.Board;
 import com.parakeetstudios.tilescape.inject.BoardFactory;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
@@ -15,8 +16,9 @@ public class ChessGame implements BoardGame {
     private BoardFactory boardFactory;
 
 
-    public ChessGame(Location gameLocation) {
-        //Board board = boardFactory.createBoard("chess", gameLocation, cfg);
+    public ChessGame(@NotNull Location gameLocation, BoardFactory boardFactory) {
+        this.boardFactory = boardFactory;
+        Board board = this.boardFactory.createBoard("chess", gameLocation);
     }
 
     @Override

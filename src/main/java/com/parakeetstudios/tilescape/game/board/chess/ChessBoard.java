@@ -8,6 +8,7 @@ import com.parakeetstudios.tilescape.game.piece.Piece;
 import com.parakeetstudios.tilescape.game.piece.PieceColor;
 import com.parakeetstudios.tilescape.game.piece.SimplePieceColor;
 import com.parakeetstudios.tilescape.game.piece.chess.ChessPiece;
+import com.parakeetstudios.tilescape.inject.PieceFactory;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,6 +22,7 @@ import java.util.function.Consumer;
 
 public class ChessBoard implements Board {
 
+    private final PieceFactory pieceFactory;
     private final TilescapeConfig cfg;
 
     private final int WIDTH = 8; //TODO allow config
@@ -28,10 +30,14 @@ public class ChessBoard implements Board {
     private final Piece[][] pieces;
 
     @Inject
-    public ChessBoard(@NotNull Location origin, @NotNull TilescapeConfig cfg) {
+    public ChessBoard(@NotNull Location origin,
+                      @NotNull PieceFactory pieceFactory,
+                      @NotNull TilescapeConfig cfg) {
+        this.pieceFactory = pieceFactory;
+        this.cfg = cfg;
         this.minecraftOrigin = origin;
         this.pieces = new ChessPiece[WIDTH][WIDTH];
-        this.cfg = cfg;
+
     }
 
     @Override
@@ -77,11 +83,11 @@ public class ChessBoard implements Board {
         }
     }
 
-    private void setPiece(char type, int file, int rank) {
+    private void setPiece(char symbol, int file, int rank) {
         // determine whether white or black
-        PieceColor color = Character.isUpperCase(type) ? SimplePieceColor.WHITE : SimplePieceColor.BLACK;
+        PieceColor color = Character.isUpperCase(symbol) ? SimplePieceColor.WHITE : SimplePieceColor.BLACK;
 
-        ChessPiece piece = new ChessPiece(type, color);
+        ChessPiece piece = (ChessPiece) pieceFactory.createPiece(symbol, color);
         pieces[file][rank] = piece;
         //piece.spawnAt(); TODO method to convert boardpos to mc location
     }

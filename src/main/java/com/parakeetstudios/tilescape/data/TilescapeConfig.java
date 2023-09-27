@@ -22,4 +22,6 @@ public class TilescapeConfig {
         return cfg.getString("DEFAULT_CHESS_MOVE_NOTATION");
     }
 
+    public String getChessModelType() { return cfg.getString("CHESS_MODEL_TYPE"); }
+
 }

@@ -1,6 +1,6 @@
 package com.parakeetstudios.tilescape.core.piece.chess;
 
-import com.parakeetstudios.tilescape.core.piece.PieceType;
+import com.parakeetstudios.tilescape.core.piece.PieceController;
 import com.parakeetstudios.tilescape.game.piece.PieceColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,11 +11,10 @@ import org.bukkit.util.Transformation;
 import org.joml.AxisAngle4f;
 import org.joml.Vector3f;
 
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum DebugPieceType implements PieceType {
+public enum ChessDebugController implements PieceController {
 
     KING('K') {
         @Override
@@ -86,7 +85,7 @@ public enum DebugPieceType implements PieceType {
 
     private final char symbol;
 
-    DebugPieceType(char symbol) {
+    ChessDebugController(char symbol) {
         this.symbol = symbol;
     }
 
@@ -119,11 +118,11 @@ public enum DebugPieceType implements PieceType {
     /**
      * Conversion map
      */
-    private static final Map<Character, DebugPieceType> SYMBOL_TO_TYPE;
+    private static final Map<Character, ChessDebugController> SYMBOL_TO_TYPE;
 
     static {
         SYMBOL_TO_TYPE = new HashMap<>();
-        for (DebugPieceType type : DebugPieceType.values()) {
+        for (ChessDebugController type : ChessDebugController.values()) {
             SYMBOL_TO_TYPE.put(type.getSymbol(), type);
         }
     }

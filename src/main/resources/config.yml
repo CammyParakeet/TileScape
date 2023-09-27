@@ -4,12 +4,20 @@
 
 ## CHESS
 
-# Default notation for chess position state
+# Default notation for chess position state - currently supported:
+# - FEN
 DEFAULT_CHESS_STATE_NOTATION: "FEN"
+
 # Default board setup for chess - uses @DEFAULT_CHESS_STATE_NOTATION
 DEFAULT_CHESS_SETUP: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
-# Default notation for a chess move
+
+# Default notation for a chess move - currently supported:
+# - Algebraic
 DEFAULT_CHESS_MOVE_NOTATION: "Algebraic"
+
+# Model type for pieces - currently supported:
+# - Debug
+CHESS_MODEL_TYPE: "Debug"
 
 
 
