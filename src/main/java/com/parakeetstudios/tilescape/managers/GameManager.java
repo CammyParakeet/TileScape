@@ -4,6 +4,7 @@ import com.parakeetstudios.tilescape.game.BoardGame;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -37,6 +38,11 @@ public interface GameManager extends Manager {
      * @return True if player in game, otherwise false.
      */
     boolean isPlayerInGame(@NotNull UUID playerID);
+
+
+    Optional<BoardGame> getPlayersGame(UUID pid);
+
+    List<UUID> getAllGamePlayers();
 
     /**
      * Ends the game session.

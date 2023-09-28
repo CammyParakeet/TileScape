@@ -43,8 +43,6 @@ public class TilescapePlugin extends JavaPlugin {
         saveDefaultConfig();
         reloadConfig();
 
-        Paralog.info("" + SimplePieceColor.WHITE);
-
         Paralog.info(getName() + " is starting...");
 
         // iterate over managers to enable

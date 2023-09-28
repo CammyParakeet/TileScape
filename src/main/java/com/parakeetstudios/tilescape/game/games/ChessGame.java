@@ -53,6 +53,11 @@ public class ChessGame implements BoardGame {
     }
 
     @Override
+    public Board getBoard() {
+        return board;
+    }
+
+    @Override
     public boolean isPlayerTurn(@NotNull UUID playerID) {
         return false;
     }

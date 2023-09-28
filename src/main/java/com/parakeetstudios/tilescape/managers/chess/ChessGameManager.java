@@ -3,6 +3,7 @@ package com.parakeetstudios.tilescape.managers.chess;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.parakeetstudios.tilescape.TilescapePlugin;
+import com.parakeetstudios.tilescape.core.tasks.HoverDisplayTask;
 import com.parakeetstudios.tilescape.core.utils.LocationUtils;
 import com.parakeetstudios.tilescape.data.TilescapeConfig;
 import com.parakeetstudios.tilescape.game.BoardGame;
@@ -14,9 +15,7 @@ import org.bukkit.Location;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Singleton
@@ -56,6 +55,19 @@ public class ChessGameManager implements GameManager, Listener {
         return playerInGame.containsKey(playerID);
     }
 
+
+    public Optional<BoardGame> getPlayersGame(UUID pid) {
+        if (!playerInGame.containsKey(pid)) return Optional.empty();
+
+        UUID gameID = playerInGame.get(pid);
+        return Optional.ofNullable(activeChessGames.get(gameID));
+    }
+
+    @Override
+    public List<UUID> getAllGamePlayers() {
+        return new ArrayList<>(playerInGame.keySet());
+    }
+
     @Override
     public void endGame(@NotNull BoardGame game) {
         activeChessGames.remove(game.getGameID());
@@ -66,6 +78,7 @@ public class ChessGameManager implements GameManager, Listener {
     @Override
     public void onEnable() {
         Bukkit.getPluginManager().registerEvents(this, plugin);
+        //new HoverDisplayTask(plugin).runTaskTimer(plugin, 0, 2); TODO needs bound in module
     }
 
     @Override

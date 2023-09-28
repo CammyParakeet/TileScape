@@ -1,5 +1,6 @@
 package com.parakeetstudios.tilescape.game;
 
+import com.parakeetstudios.tilescape.game.board.Board;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -47,7 +48,7 @@ public interface BoardGame {
      *
      * @return The game board.
      */
-    //Board getBoard();
+    Board getBoard();
 
     /**
      * Checks if it's the players turn, using their UUID.
