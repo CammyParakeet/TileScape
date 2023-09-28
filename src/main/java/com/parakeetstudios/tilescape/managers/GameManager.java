@@ -3,6 +3,7 @@ package com.parakeetstudios.tilescape.managers;
 import com.parakeetstudios.tilescape.game.BoardGame;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -19,10 +20,9 @@ public interface GameManager extends Manager {
     /**
      * Builds a new game session for two players identified by UUIDs.
      *
-     * @param pID1 The unique ID of the first player.
-     * @param pID2 The unique ID of the second player.
+     * @param playersIDs the list of players to join the game
      */
-    void buildGame(@NotNull UUID pID1, @NotNull UUID pID2);
+    void buildGame(List<UUID> playersIDs);
 
     /**
      * Registers a new game session to the managers active games.
@@ -33,10 +33,10 @@ public interface GameManager extends Manager {
     /**
      * Checks if a player, using UUID, is in an active game session.
      *
-     * @param pID The unique ID of the player.
+     * @param playerID The unique ID of the player.
      * @return True if player in game, otherwise false.
      */
-    boolean isPlayerInGame(@NotNull UUID pID);
+    boolean isPlayerInGame(@NotNull UUID playerID);
 
     /**
      * Ends the game session.

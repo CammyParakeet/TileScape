@@ -17,10 +17,9 @@ DEFAULT_CHESS_MOVE_NOTATION: "Algebraic"
 
 
 
-## Controller Mappings
-CONTROLLER_MAPPINGS:
-  chess_debug: "DebugChessSpawner"
-  chess_default: "DefaultChessSpawner"
-
+## Game Spawn Locations
+CHESS_LOCATIONS:
+  - { x: -19.42, y: 66.00, z: -154.50, facing: "east"}
+SHOGI_LOCATIONS:
 
 

@@ -2,7 +2,7 @@ package com.parakeetstudios.tilescape.game;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -33,14 +33,14 @@ public interface BoardGame {
      *
      * @return A set of UUIDs representing the players.
      */
-    Set<UUID> getPlayers();
+    List<UUID> getPlayers();
 
     /**
      * Gets the set of players spectating this game.
      *
      * @return A set of UUIDs representing the players.
      */
-    Set<UUID> getViewers();
+    List<UUID> getViewers();
 
     /**
      * Gets the game board associated with this session.
@@ -52,10 +52,10 @@ public interface BoardGame {
     /**
      * Checks if it's the players turn, using their UUID.
      *
-     * @param pID The UUID of the player.
+     * @param playerID The UUID of the player.
      * @return True if it's the player's turn, otherwise false.
      */
-    boolean isPlayerTurn(@NotNull UUID pID);
+    boolean isPlayerTurn(@NotNull UUID playerID);
 
     /**
      * Ends the current player's turn and passes control to the next player.
