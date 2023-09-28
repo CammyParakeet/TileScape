@@ -44,6 +44,46 @@ public class SelectionManager implements Manager, Listener {
         this.gameManager = gameManager;
     }
 
+    // clears the players hover display
+    public void clearHover(UUID playerID) {
+        if (!currentHovers.containsKey(playerID)) return;
+
+        currentHovers.get(playerID).remove();
+        currentHovers.remove(playerID);
+        lastBlockHovered.remove(playerID);
+    }
+
+
+    public void updateHover(UUID playerID, Block block) {
+        // return if we haven't changed blocks
+        if (block.equals(lastBlockHovered.get(playerID))) return;
+
+        clearHover(playerID);
+
+        //currentHovers.put(playerID, some spawn method for selections)
+        lastBlockHovered.put(playerID, block);
+    }
+
+
+    public void clearSelection(UUID playerID) {
+        if (currentSelections.containsKey(playerID)) {
+            currentSelections.get(playerID).remove();
+        }
+    }
+
+    public void updateSelection(UUID playerID, Color color) {
+        // check if it has a piece
+        Block currentBlock = lastBlockHovered.get(playerID);
+        // some method to get the piece
+
+        clearSelection(playerID);
+
+        //BoardSelection selection = new BoardSelection(currentBlock, color, method to get piece?)
+        //currentSelections.put(playerID, selection);
+    }
+
+
+
     @Override
     public void onEnable() {
         Bukkit.getPluginManager().registerEvents(this, plugin);

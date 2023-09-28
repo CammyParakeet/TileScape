@@ -16,16 +16,11 @@ public class BoardSelection implements Selection {
     private Color color;
     private Piece currentPiece;
 
-    private final TilescapeConfig cfg;
-
-    @AssistedInject
     public BoardSelection(
-            @Assisted Block currentBlock,
-            @Assisted Color color,
-            @Assisted Piece piece,
-            @NotNull TilescapeConfig cfg)
+            Block currentBlock,
+            Color color,
+            Piece piece)
     {
-        this.cfg = cfg;
         this.currentBlock = currentBlock;
         this.color = color;
         this.currentPiece = piece;
