@@ -1,9 +1,9 @@
 package com.parakeetstudios.tilescape.game.board.chess;
 
-import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import com.parakeetstudios.tilescape.core.utils.LocationUtils;
+import com.parakeetstudios.tilescape.core.utils.PieceRenderer;
 import com.parakeetstudios.tilescape.data.TilescapeConfig;
 import com.parakeetstudios.tilescape.game.board.Board;
 import com.parakeetstudios.tilescape.game.board.BoardPosition;
@@ -28,7 +28,7 @@ public class ChessBoard implements Board {
 
     private final PieceFactory<ChessPiece> pieceFactory;
     //TODO rework this to inject smarter
-    private final RendererFactory rendererFactory;
+    private final PieceRenderer renderer;
     private final TilescapeConfig cfg;
 
     private final int WIDTH = 8; //TODO allow config
@@ -43,7 +43,7 @@ public class ChessBoard implements Board {
                       @NotNull TilescapeConfig cfg)
     {
         this.pieceFactory = pieceFactory;
-        this.rendererFactory = rendererFactory;
+        this.renderer = rendererFactory.create("Chess");
         this.cfg = cfg;
         this.minecraftOrigin = origin;
         this.pieces = new ChessPiece[WIDTH][WIDTH];
@@ -96,7 +96,7 @@ public class ChessBoard implements Board {
         // determine whether white or black
         PieceColor color = Character.isUpperCase(symbol) ? SimplePieceColor.WHITE : SimplePieceColor.BLACK;
 
-        ChessPiece piece = pieceFactory.createPiece(symbol, color, rendererFactory);
+        ChessPiece piece = pieceFactory.createPiece(symbol, color, renderer);
         pieces[file][rank] = piece;
 
         // spawn in MC world

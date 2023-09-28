@@ -18,7 +18,7 @@ public class ChessPiece extends GamePiece {
     @AssistedInject
     public ChessPiece(@Assisted char symbol,
                       @Assisted @NotNull PieceColor color,
-                      @NotNull PieceRenderer renderer,
+                      @Assisted @NotNull PieceRenderer renderer,
                       @NotNull TilescapeConfig cfg)
     {
         super(symbol, color, renderer, cfg);
