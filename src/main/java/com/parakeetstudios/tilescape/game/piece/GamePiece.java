@@ -1,40 +1,48 @@
 package com.parakeetstudios.tilescape.game.piece;
 
-import com.parakeetstudios.tilescape.core.piece.PieceSpawner;
+import com.parakeetstudios.tilescape.core.utils.PieceRenderer;
 import com.parakeetstudios.tilescape.data.TilescapeConfig;
-import com.parakeetstudios.tilescape.inject.PieceSpawnerFactory;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * @author Cammy
+ * @version 1.0
+ */
+
 public abstract class GamePiece implements Piece {
 
     protected final TilescapeConfig cfg;
-    //protected final PieceSpawnerFactory pieceTypeFactory;
+    protected final PieceRenderer renderer;
 
     protected final char symbol;
     protected final PieceColor color;
-    protected PieceSpawner controller;
-    protected Entity marker; // possibly needed for interaction?
+
+    // protected Entity marker; - possibly needed for interaction?
     protected Entity model;
 
     public GamePiece(char symbol,
-                     @NotNull PieceColor color,
-                     @NotNull TilescapeConfig cfg)
+                     PieceColor color,
+                     PieceRenderer renderer,
+                     TilescapeConfig cfg)
     {
         this.symbol = symbol;
         this.color = color;
         this.cfg = cfg;
-        //this.pieceTypeFactory = pieceTypeFactory;
+        this.renderer = renderer;
     }
 
-    protected void determineType(String gameModelType) {
-        //this.controller = pieceTypeFactory.createSpawner(symbol, color);
-    }
+
+    @Override
+    public char getSymbol() { return symbol; }
+
+    @Override
+    public PieceColor getColor() { return color; }
 
     @Override
     public void spawnAt(@NotNull Location location) {
-        model = controller.spawnModel(location, color);
+        model = renderer.renderPiece(this, location);
     }
 
     @Override

@@ -22,7 +22,7 @@ public interface GameManager extends Manager {
      *
      * @param playersIDs the list of players to join the game
      */
-    void buildGame(List<UUID> playersIDs);
+    BoardGame buildGame(List<UUID> playersIDs);
 
     /**
      * Registers a new game session to the managers active games.

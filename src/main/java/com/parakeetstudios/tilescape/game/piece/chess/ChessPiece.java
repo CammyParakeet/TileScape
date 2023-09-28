@@ -1,7 +1,8 @@
 package com.parakeetstudios.tilescape.game.piece.chess;
 
-import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
+import com.parakeetstudios.tilescape.core.utils.PieceRenderer;
 import com.parakeetstudios.tilescape.data.TilescapeConfig;
 import com.parakeetstudios.tilescape.game.piece.GamePiece;
 import com.parakeetstudios.tilescape.game.piece.PieceColor;
@@ -14,13 +15,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class ChessPiece extends GamePiece {
 
-    @Inject
+    @AssistedInject
     public ChessPiece(@Assisted char symbol,
                       @Assisted @NotNull PieceColor color,
+                      @NotNull PieceRenderer renderer,
                       @NotNull TilescapeConfig cfg)
     {
-        super(symbol, color, cfg);
-        String gameModelType = cfg.getChessModelType() + "_chess";
-        //determineType(gameModelType);
+        super(symbol, color, renderer, cfg);
     }
 }

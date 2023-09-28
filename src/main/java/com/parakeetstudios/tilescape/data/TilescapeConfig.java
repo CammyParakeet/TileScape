@@ -1,6 +1,9 @@
 package com.parakeetstudios.tilescape.data;
 
 import com.parakeetstudios.tilescape.core.utils.LocationUtils;
+import com.parakeetstudios.tilescape.game.piece.Piece;
+import com.parakeetstudios.tilescape.game.piece.PieceColor;
+import com.parakeetstudios.tilescape.utils.Matrix;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -9,7 +12,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class TilescapeConfig {
 
@@ -31,12 +33,12 @@ public class TilescapeConfig {
         return cfg.getString("DEFAULT_CHESS_MOVE_NOTATION");
     }
 
-    public String getChessModelType() { return cfg.getString("CHESS_MODEL_TYPE"); }
-
-    public String getShogiModelType() { return cfg.getString("SHOGI_MODEL_TYPE"); }
-
+    /**
+     * Collect pre-configured chess game locations
+     * @return {@link List<>} of {@link Location}
+     */
     public List<Location> getChessLocations() {
-        List<?> locationSections = cfg.getList("CHESS_LOCATIONS");
+        final List<?> locationSections = cfg.getList("CHESS_LOCATIONS");
         if (locationSections == null) return null;
 
         List<ConfigurationSection> chessLocSections = locationSections.stream()
@@ -56,6 +58,41 @@ public class TilescapeConfig {
         }
 
         return chessLocations;
+    }
+
+    public String getRenderMode() { return cfg.getString("RENDER_MODE"); }
+
+    /**
+     * Generate a {@link ModelData} object from config
+     * @param game classifier to extract game specific pieces
+     * @param piece the piece to find data for
+     * @return {@link ModelData} for the piece
+     */
+    public ModelData getPieceModelData(String game, Piece piece) {
+        final ConfigurationSection gameSection = cfg.getConfigurationSection("MODELS." + getRenderMode() + game.toUpperCase());
+        if (gameSection == null) {
+            throw new IllegalArgumentException("No model data found for: " + game.toUpperCase());
+        }
+
+        final ConfigurationSection modelSection = gameSection.getConfigurationSection(String.valueOf(piece.getSymbol()));
+        if (modelSection == null) {
+            throw new IllegalArgumentException("No model data found for: " + piece.getSymbol());
+        }
+
+        ModelData data = new ModelData();
+        PieceColor color = piece.getColor();
+
+        // get model based on it's color classifier
+        data.setModel(modelSection.getItemStack("MODEL_" + color.toString()));
+
+        // create a new transformation - will need better logic in future
+        Matrix M = new Matrix();
+        M.setScale(Objects.requireNonNull(modelSection.getVector("SCALE")));
+        data.setTransformation(M.toTransformation());
+
+        //TODO way to set rotation from facing - use enum
+
+        return data;
     }
 
 

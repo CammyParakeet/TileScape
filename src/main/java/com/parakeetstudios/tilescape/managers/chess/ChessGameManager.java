@@ -7,6 +7,7 @@ import com.parakeetstudios.tilescape.core.utils.LocationUtils;
 import com.parakeetstudios.tilescape.data.TilescapeConfig;
 import com.parakeetstudios.tilescape.game.BoardGame;
 import com.parakeetstudios.tilescape.game.games.ChessGame;
+import com.parakeetstudios.tilescape.inject.GameFactory;
 import com.parakeetstudios.tilescape.managers.GameManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -26,23 +27,23 @@ public class ChessGameManager implements GameManager, Listener {
     private final Map<UUID, ChessGame> activeChessGames = new ConcurrentHashMap<>();
     private final Map<UUID, UUID> playerInGame = new ConcurrentHashMap<>();
     private final List<Location> chessLocations;
-    //TODO get game locations from config?
+    private final GameFactory<ChessGame> gameFactory;
 
     @Inject
     public ChessGameManager(@NotNull TilescapePlugin plugin,
-                            @NotNull TilescapeConfig cfg
+                            @NotNull TilescapeConfig cfg,
+                            @NotNull GameFactory<ChessGame> gameFactory
                             )
     {
         this.cfg = cfg;
         this.plugin = plugin;
         this.chessLocations = cfg.getChessLocations();
+        this.gameFactory = gameFactory;
     }
 
     @Override
-    public void buildGame(List<UUID> playerIDs) {
-        Location location = LocationUtils.giveRandomGameLocation(chessLocations);
-
-        //ChessGame game = new ChessGame(playerIDs, location);
+    public BoardGame buildGame(List<UUID> playerIDs) {
+        return gameFactory.create(playerIDs, LocationUtils.giveRandomGameLocation(chessLocations));
     }
 
     @Override
@@ -69,6 +70,7 @@ public class ChessGameManager implements GameManager, Listener {
 
     @Override
     public void onDisable() {
-
+        activeChessGames.values().forEach(ChessGame::destroy);
+        this.activeChessGames.clear();
     }
 }

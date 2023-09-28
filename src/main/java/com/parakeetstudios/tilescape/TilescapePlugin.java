@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
+import com.parakeetstudios.tilescape.game.piece.SimplePieceColor;
 import com.parakeetstudios.tilescape.inject.TilescapeModule;
 import com.parakeetstudios.tilescape.managers.GameManager;
 import com.parakeetstudios.tilescape.utils.Paralog;
@@ -42,7 +43,7 @@ public class TilescapePlugin extends JavaPlugin {
         saveDefaultConfig();
         reloadConfig();
 
-        //injector.injectMembers(this);
+        Paralog.info("" + SimplePieceColor.WHITE);
 
         Paralog.info(getName() + " is starting...");
 

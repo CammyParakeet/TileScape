@@ -1,7 +1,7 @@
 package com.parakeetstudios.tilescape.game.games;
 
-import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 import com.parakeetstudios.tilescape.data.TilescapeConfig;
 import com.parakeetstudios.tilescape.game.BoardGame;
 import com.parakeetstudios.tilescape.game.board.Board;
@@ -20,7 +20,7 @@ public class ChessGame implements BoardGame {
     private final List<UUID> players;
     private final TilescapeConfig cfg;
 
-    @Inject
+    @AssistedInject
     public ChessGame(@Assisted @NotNull List<UUID> players,
                      @Assisted @NotNull Location gameLocation,
                      @NotNull TilescapeConfig cfg,

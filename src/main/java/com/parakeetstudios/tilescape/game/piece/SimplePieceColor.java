@@ -2,6 +2,11 @@ package com.parakeetstudios.tilescape.game.piece;
 
 import org.bukkit.Color;
 
+/**
+ * @author Cammy
+ * @version 1.0
+ */
+
 public enum SimplePieceColor implements PieceColor {
 
     WHITE(true),

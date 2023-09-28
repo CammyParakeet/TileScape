@@ -10,9 +10,19 @@ import org.jetbrains.annotations.NotNull;
 
 public interface Piece {
 
-    // PieceSpawner getType();
+    /**
+     * Gives the character symbol representing the piece.
+     *
+     * @return symbol of the piece.
+     */
+    char getSymbol();
 
-    // PieceColor getColor();
+    /**
+     * Gives the color of the piece.
+     *
+     * @return color of the piece.
+     */
+    PieceColor getColor();
 
     /**
      *  Minecraft Logic

@@ -5,6 +5,6 @@ import com.parakeetstudios.tilescape.game.piece.PieceColor;
 import org.jetbrains.annotations.NotNull;
 
 public interface PieceFactory<P extends Piece> {
-    P createPiece(char symbol, @NotNull PieceColor color);
+    P createPiece(char symbol, @NotNull PieceColor color, @NotNull RendererFactory rendererFactory);
 }
 

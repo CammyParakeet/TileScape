@@ -1,22 +1,27 @@
 package com.parakeetstudios.tilescape.game.piece.shogi;
 
-import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
+import com.parakeetstudios.tilescape.core.utils.PieceRenderer;
 import com.parakeetstudios.tilescape.data.TilescapeConfig;
 import com.parakeetstudios.tilescape.game.piece.GamePiece;
 import com.parakeetstudios.tilescape.game.piece.PieceColor;
-import com.parakeetstudios.tilescape.inject.PieceSpawnerFactory;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * @author Cammy
+ * @version 1.0
+ */
+
+// TEMP CLASS
 public class ShogiPiece extends GamePiece {
 
-    @Inject
+    @AssistedInject
     public ShogiPiece(@Assisted char symbol,
                       @Assisted @NotNull PieceColor color,
+                      @NotNull PieceRenderer renderer,
                       @NotNull TilescapeConfig cfg)
     {
-        super(symbol, color, cfg);
-        String gameModelType = cfg.getShogiModelType() + "_shogi";
-        //determineType(gameModelType);
+        super(symbol, color, renderer, cfg);
     }
 }

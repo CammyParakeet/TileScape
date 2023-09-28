@@ -1,5 +1,6 @@
 package com.parakeetstudios.tilescape.core.utils;
 
+import com.parakeetstudios.tilescape.game.board.BoardPosition;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,6 +24,12 @@ public class LocationUtils {
         Random r = new Random();
         int index = r.nextInt(gameLocations.size());
         return gameLocations.get(index);
+    }
+
+    public static Location getLocFromBoardPos(BoardPosition pos, Location origin) {
+        double blockX = origin.getBlockX() + pos.file() + 0.5;
+        double blockZ = origin.getBlockZ() + pos.rank() + 0.5;
+        return new Location(origin.getWorld(), blockX, origin.getBlockY(), blockZ);
     }
 
 }
