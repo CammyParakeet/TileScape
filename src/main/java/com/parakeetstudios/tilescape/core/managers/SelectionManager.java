@@ -2,11 +2,14 @@ package com.parakeetstudios.tilescape.core.managers;
 
 import com.google.inject.Inject;
 import com.parakeetstudios.tilescape.TilescapePlugin;
+import com.parakeetstudios.tilescape.core.events.GameEvents;
 import com.parakeetstudios.tilescape.core.selector.BoardSelection;
+import com.parakeetstudios.tilescape.core.tasks.HoverDisplayTask;
 import com.parakeetstudios.tilescape.data.TilescapeConfig;
 import com.parakeetstudios.tilescape.game.BoardGame;
 import com.parakeetstudios.tilescape.game.board.Board;
 import com.parakeetstudios.tilescape.game.piece.Piece;
+import com.parakeetstudios.tilescape.inject.TaskFactory;
 import com.parakeetstudios.tilescape.managers.GameManager;
 import com.parakeetstudios.tilescape.managers.UtilityManager;
 import com.parakeetstudios.tilescape.utils.Paralog;
@@ -33,7 +36,9 @@ public class SelectionManager implements UtilityManager, Listener {
     private final TilescapePlugin plugin;
     private final TilescapeConfig cfg;
     private final GameManager gameManager;
+    private final TaskFactory taskFactory;
 
+    private final Map<UUID, HoverDisplayTask> activeHoverTasks = new ConcurrentHashMap<>();
     private final Map<UUID, Block> lastBlockHovered = new ConcurrentHashMap<>();
     private final Map<UUID, BlockDisplay> currentHovers = new ConcurrentHashMap<>();
     private final Map<UUID, BoardSelection> currentSelections = new ConcurrentHashMap<>();
@@ -48,11 +53,13 @@ public class SelectionManager implements UtilityManager, Listener {
     @Inject
     public SelectionManager(@NotNull TilescapePlugin plugin,
                             @NotNull GameManager gameManager,
+                            @NotNull TaskFactory taskFactory,
                             @NotNull TilescapeConfig cfg)
     {
         this.plugin = plugin;
         this.cfg = cfg;
         this.gameManager = gameManager;
+        this.taskFactory = taskFactory;
     }
 
     // clears the players hover display
@@ -123,9 +130,17 @@ public class SelectionManager implements UtilityManager, Listener {
                 //TODO handleMoveAttempt(pid, game);
             }
         }
-
-
     }
+
+
+    @EventHandler
+    public void onPlayerEnterGame(GameEvents.PlayerEnterGameEvent event) {
+        UUID playerID = event.getPlayerID();
+        HoverDisplayTask hoverTask = taskFactory.createHoverTask();
+        hoverTask.runTaskTimer(plugin, 0, 2);
+        activeHoverTasks.put(playerID, hoverTask);
+    }
+
 
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent event) {
