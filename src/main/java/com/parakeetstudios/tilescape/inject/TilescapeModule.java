@@ -60,6 +60,8 @@ public class TilescapeModule extends AbstractModule {
 
         // bind renderer factory
         install(new FactoryModuleBuilder().build(RendererFactory.class));
+        // build task factory
+        install(new FactoryModuleBuilder().build(TaskFactory.class));
 
     }
 

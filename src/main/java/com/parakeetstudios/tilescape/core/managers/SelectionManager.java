@@ -136,7 +136,7 @@ public class SelectionManager implements UtilityManager, Listener {
     @EventHandler
     public void onPlayerEnterGame(GameEvents.PlayerEnterGameEvent event) {
         UUID playerID = event.getPlayerID();
-        HoverDisplayTask hoverTask = taskFactory.createHoverTask();
+        HoverDisplayTask hoverTask = taskFactory.createHoverTask(playerID);
         hoverTask.runTaskTimer(plugin, 0, 2);
         activeHoverTasks.put(playerID, hoverTask);
     }

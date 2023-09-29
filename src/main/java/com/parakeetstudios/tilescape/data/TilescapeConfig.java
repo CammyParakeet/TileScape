@@ -21,6 +21,8 @@ public class TilescapeConfig {
         this.cfg = cfg;
     }
 
+    public double getMaxRaytraceDistance() { return cfg.getDouble("RAY_TRACE_DISTANCE"); }
+
     public String getDefaultChessStateNotation() {
         return cfg.getString("DEFAULT_CHESS_STATE_NOTATION");
     }
