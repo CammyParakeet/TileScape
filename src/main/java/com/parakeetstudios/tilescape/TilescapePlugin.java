@@ -7,6 +7,7 @@ import com.google.inject.Singleton;
 import com.parakeetstudios.tilescape.game.piece.SimplePieceColor;
 import com.parakeetstudios.tilescape.inject.TilescapeModule;
 import com.parakeetstudios.tilescape.managers.GameManager;
+import com.parakeetstudios.tilescape.managers.UtilityManager;
 import com.parakeetstudios.tilescape.utils.Paralog;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -25,6 +26,9 @@ public class TilescapePlugin extends JavaPlugin {
 
     @Inject
     private Set<GameManager> gameManagers;
+
+    @Inject
+    private Set<UtilityManager> utilityManagers;
 
     @Override
     public void onLoad() {
@@ -45,8 +49,14 @@ public class TilescapePlugin extends JavaPlugin {
 
         Paralog.info(getName() + " is starting...");
 
-        // iterate over managers to enable
+        // enable utilities
+        utilityManagers.forEach(UtilityManager::onEnable);
+
+        // enable our game managers - TODO only do ones that config has enabled?
+        // possibly offload this to a factory
         gameManagers.forEach(GameManager::onEnable);
+
+
 
         //TODO
     }

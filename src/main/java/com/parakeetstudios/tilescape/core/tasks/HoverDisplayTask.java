@@ -15,17 +15,15 @@ import java.util.UUID;
 
 public class HoverDisplayTask extends BukkitRunnable {
 
-    private final TilescapePlugin plugin;
     private final GameManager gameManager;
     private final SelectionManager selectionManager;
 
     @Inject
-    public HoverDisplayTask(@NotNull TilescapePlugin plugin,
-                            @NotNull GameManager gameManager,
-                            @NotNull SelectionManager selectionManager) {
-        this.plugin = plugin;
-        this.gameManager = gameManager;
+    public HoverDisplayTask(@NotNull SelectionManager selectionManager,
+                            @NotNull GameManager gameManager
+                            ) {
         this.selectionManager = selectionManager;
+        this.gameManager = gameManager;
     }
 
     @Override

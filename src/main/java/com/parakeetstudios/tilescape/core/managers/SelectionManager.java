@@ -8,7 +8,8 @@ import com.parakeetstudios.tilescape.game.BoardGame;
 import com.parakeetstudios.tilescape.game.board.Board;
 import com.parakeetstudios.tilescape.game.piece.Piece;
 import com.parakeetstudios.tilescape.managers.GameManager;
-import com.parakeetstudios.tilescape.managers.Manager;
+import com.parakeetstudios.tilescape.managers.UtilityManager;
+import com.parakeetstudios.tilescape.utils.Paralog;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.block.Block;
@@ -22,13 +23,12 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.text.html.Option;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class SelectionManager implements Manager, Listener {
+public class SelectionManager implements UtilityManager, Listener {
 
     private final TilescapePlugin plugin;
     private final TilescapeConfig cfg;
@@ -137,6 +137,7 @@ public class SelectionManager implements Manager, Listener {
 
     @Override
     public void onEnable() {
+        Paralog.info("Selections starting?");
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 

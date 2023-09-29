@@ -7,13 +7,16 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.multibindings.Multibinder;
 import com.parakeetstudios.tilescape.TilescapePlugin;
+import com.parakeetstudios.tilescape.core.managers.SelectionManager;
 import com.parakeetstudios.tilescape.data.TilescapeConfig;
 import com.parakeetstudios.tilescape.game.board.chess.ChessBoard;
 import com.parakeetstudios.tilescape.game.games.ChessGame;
 import com.parakeetstudios.tilescape.game.piece.chess.ChessPiece;
 import com.parakeetstudios.tilescape.game.piece.shogi.ShogiPiece;
 import com.parakeetstudios.tilescape.managers.GameManager;
-import com.parakeetstudios.tilescape.managers.chess.ChessGameManager;
+import com.parakeetstudios.tilescape.managers.UtilityManager;
+import com.parakeetstudios.tilescape.managers.games.ChessGameManager;
+import com.parakeetstudios.tilescape.managers.games.ShogiGameManager;
 
 /**
  * @author Cammy
@@ -39,6 +42,11 @@ public class TilescapeModule extends AbstractModule {
         // bind game managers
         Multibinder<GameManager> gameManagerBinder = Multibinder.newSetBinder(binder(), GameManager.class);
         gameManagerBinder.addBinding().to(ChessGameManager.class);
+        gameManagerBinder.addBinding().to(ShogiGameManager.class);
+
+        // bind utility managers
+        Multibinder<UtilityManager> utilityManagerBinder = Multibinder.newSetBinder(binder(), UtilityManager.class);
+        utilityManagerBinder.addBinding().to(SelectionManager.class);
 
         // bind game classes
         install(new FactoryModuleBuilder().build(new TypeLiteral<GameFactory<ChessGame>>(){}));

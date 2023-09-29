@@ -2,11 +2,13 @@ package com.parakeetstudios.tilescape.game.games;
 
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
+import com.parakeetstudios.tilescape.core.events.GameEvents;
 import com.parakeetstudios.tilescape.data.TilescapeConfig;
 import com.parakeetstudios.tilescape.game.BoardGame;
 import com.parakeetstudios.tilescape.game.board.Board;
 import com.parakeetstudios.tilescape.game.board.chess.ChessBoard;
 import com.parakeetstudios.tilescape.inject.BoardFactory;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,15 +23,17 @@ public class ChessGame implements BoardGame {
     private final TilescapeConfig cfg;
 
     @AssistedInject
-    public ChessGame(@Assisted @NotNull List<UUID> players,
+    public ChessGame(@Assisted @NotNull List<UUID> playerIDs,
                      @Assisted @NotNull Location gameLocation,
                      @NotNull TilescapeConfig cfg,
                      @NotNull BoardFactory<ChessBoard> boardFactory)
     {
-        this.players = players;
         this.cfg = cfg;
+        this.players = playerIDs;
         this.gameID = UUID.randomUUID();
         this.board = boardFactory.createBoard(gameLocation);
+        // join game event for each player
+        playerIDs.forEach(id -> Bukkit.getPluginManager().callEvent(new GameEvents.PlayerEnterGameEvent(id, this)));
     }
 
     @Override

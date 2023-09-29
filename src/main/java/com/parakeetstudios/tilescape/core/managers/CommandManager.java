@@ -1,8 +1,8 @@
 package com.parakeetstudios.tilescape.core.managers;
 
-import com.parakeetstudios.tilescape.managers.Manager;
+import com.parakeetstudios.tilescape.managers.UtilityManager;
 
-public class CommandManager implements Manager {
+public class CommandManager implements UtilityManager {
 
     @Override
     public void onEnable() {
