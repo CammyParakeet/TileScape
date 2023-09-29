@@ -1,9 +1,10 @@
 package com.parakeetstudios.tilescape.core.tasks;
 
-import com.google.inject.Inject;
-import com.parakeetstudios.tilescape.TilescapePlugin;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 import com.parakeetstudios.tilescape.core.managers.SelectionManager;
 import com.parakeetstudios.tilescape.core.utils.BlockUtils;
+import com.parakeetstudios.tilescape.game.BoardGame;
 import com.parakeetstudios.tilescape.managers.GameManager;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -15,31 +16,42 @@ import java.util.UUID;
 
 public class HoverDisplayTask extends BukkitRunnable {
 
-    private final GameManager gameManager;
+    private final UUID playerID;
+    private final Player player;
+    private final BoardGame playersGame;
     private final SelectionManager selectionManager;
 
-    @Inject
-    public HoverDisplayTask(@NotNull SelectionManager selectionManager,
+    @AssistedInject
+    public HoverDisplayTask(@Assisted @NotNull UUID playerID,
+                            @NotNull SelectionManager selectionManager,
                             @NotNull GameManager gameManager
                             ) {
+        this.playerID = playerID;
+        this.player = Bukkit.getPlayer(playerID);
+        if (this.player == null) {
+            throw new IllegalArgumentException("No Player with UUID " + playerID + " found");
+        }
         this.selectionManager = selectionManager;
-        this.gameManager = gameManager;
+        // TODO some exception needed here
+        this.playersGame = gameManager.getPlayersGame(playerID).orElseThrow();
     }
 
     @Override
     public void run() {
-        for (UUID playerID : gameManager.getAllGamePlayers()) {
-            Player p = Bukkit.getPlayer(playerID);
-            if (p == null) continue;
-
-            Block block = BlockUtils.getTargetedBlock(p, 7.5);
-
-            if (block == null) {
-                selectionManager.clearHover(playerID);
-                continue;
-            }
-            selectionManager.updateHover(playerID, block);
+        // cancel if they leave game or not their turn
+        if (!player.isOnline() || !playersGame.isPlayerTurn(playerID)) {
+            cancel();
+            return;
         }
 
+        Block block = BlockUtils.getTargetedBlock(player, 7.5);
+
+        // this will happen if they are our of range - so we don't show a hover
+        if (block == null) {
+            selectionManager.clearHover(playerID);
+            return;
+        }
+        // update to display the hover
+        selectionManager.updateHover(playerID, block);
     }
 }
