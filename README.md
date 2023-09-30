@@ -14,6 +14,9 @@ Roadmap:
 - Switchup from block-based selection raytracing -> entity raytracing on interaction entities?
   - This should allow for games to be globally scalable, eg entire board & pieces be the size of 1 block, or 8 blocks, or even larger etc
 
+- Actual move validation!
+  - Pieces would have attached movelogic, and specific caching instructions to reject invalid moves - or display valid ones
+
 - Command & menu management
 - Allow spectators
 - Have gamelogic server-side but all rendering client-side
