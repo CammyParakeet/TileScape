@@ -88,9 +88,7 @@ public class ChessGameManager implements GameManager, Listener {
 
     @Override
     public void onEnable() {
-        Paralog.info("Chess starting?");
         Bukkit.getPluginManager().registerEvents(this, plugin);
-        //new HoverDisplayTask().runTaskTimer(plugin, 0, 2); //TODO needs bound in module
     }
 
     @Override

@@ -136,7 +136,7 @@ public class ChessBoard implements Board {
 
     @Override
     public Optional<Piece> getPieceAt(@NotNull BoardPosition pos) {
-        return Optional.empty();
+        return Optional.ofNullable(pieces[pos.file()][pos.rank()]);
     }
 
     @Override

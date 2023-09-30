@@ -8,17 +8,18 @@ import com.parakeetstudios.tilescape.core.selector.Selection;
 import com.parakeetstudios.tilescape.core.tasks.HoverDisplayTask;
 import com.parakeetstudios.tilescape.data.TilescapeConfig;
 import com.parakeetstudios.tilescape.game.BoardGame;
+import com.parakeetstudios.tilescape.game.board.Board;
 import com.parakeetstudios.tilescape.game.piece.Piece;
 import com.parakeetstudios.tilescape.inject.TaskFactory;
 import com.parakeetstudios.tilescape.managers.CentralGameRegistry;
 import com.parakeetstudios.tilescape.managers.UtilityManager;
-import com.parakeetstudios.tilescape.utils.Paralog;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.block.Block;
 import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -116,10 +117,11 @@ public class SelectionManager implements UtilityManager, Listener {
         if (selection != null) selection.remove();
     }
 
+
     public void updateSelection(UUID playerID, Color color) {
         // check if it has a piece
         Block currentBlock = lastBlockHovered.get(playerID);
-        // TODO some method to get the piece
+        Optional<Piece> hasPiece = getSelectedPiece(playerID, currentBlock);
 
         clearSelection(playerID);
 
@@ -128,13 +130,17 @@ public class SelectionManager implements UtilityManager, Listener {
     }
 
     private Optional<Piece> getSelectedPiece(UUID playerID, Block selected) {
-        //Board board = gameRegistry.g
+        Board board = gameRegistry.getPlayersGame(playerID).orElseThrow().getBoard();
         //return board.getPieceAt(); TODO method to get boardselection of a block?
         return null;
     }
 
 
-    @EventHandler
+    /**
+     *  Selection Listeners
+     */
+
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerClick(PlayerInteractEvent event) {
         UUID playerID = event.getPlayer().getUniqueId();
 
@@ -162,19 +168,19 @@ public class SelectionManager implements UtilityManager, Listener {
     }
 
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerEnterGame(GameEvents.PlayerEnterGameEvent event) {
         UUID playerID = event.getPlayerID();
         startHoverTask(playerID, event.getGame());
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerLeaveGame(GameEvents.PlayerLeaveGameEvent event) {
         UUID playerID = event.getPlayerID();
         clearHoverTask(playerID);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerLeave(PlayerQuitEvent event) {
         UUID playerID = event.getPlayer().getUniqueId();
         clearHoverTask(playerID);
@@ -183,9 +189,12 @@ public class SelectionManager implements UtilityManager, Listener {
         //TODO other storage logic with player who left?
     }
 
+    /**
+     * Setup/Cleanup
+     */
+
     @Override
     public void onEnable() {
-        Paralog.info("Selections starting?");
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 

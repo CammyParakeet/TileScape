@@ -10,13 +10,15 @@ import com.parakeetstudios.tilescape.inject.GameFactory;
 import com.parakeetstudios.tilescape.managers.CentralGameRegistry;
 import com.parakeetstudios.tilescape.managers.GameManager;
 import com.parakeetstudios.tilescape.utils.Paralog;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ShogiGameManager implements GameManager {
+public class ShogiGameManager implements GameManager, Listener {
 
 
     private final TilescapePlugin plugin;
@@ -78,7 +80,7 @@ public class ShogiGameManager implements GameManager {
 
     @Override
     public void onEnable() {
-        Paralog.info("Shogi starting?");
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
