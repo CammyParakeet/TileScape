@@ -13,6 +13,7 @@ import com.parakeetstudios.tilescape.game.board.chess.ChessBoard;
 import com.parakeetstudios.tilescape.game.games.ChessGame;
 import com.parakeetstudios.tilescape.game.piece.chess.ChessPiece;
 import com.parakeetstudios.tilescape.game.piece.shogi.ShogiPiece;
+import com.parakeetstudios.tilescape.managers.CentralGameRegistry;
 import com.parakeetstudios.tilescape.managers.GameManager;
 import com.parakeetstudios.tilescape.managers.UtilityManager;
 import com.parakeetstudios.tilescape.managers.games.ChessGameManager;
@@ -39,6 +40,9 @@ public class TilescapeModule extends AbstractModule {
         // create single plugin instance
         bind(TilescapePlugin.class).toInstance(plugin);
 
+        // bind central game registry singleton
+        bind(CentralGameRegistry.class).in(Singleton.class);
+
         // bind game managers
         Multibinder<GameManager> gameManagerBinder = Multibinder.newSetBinder(binder(), GameManager.class);
         gameManagerBinder.addBinding().to(ChessGameManager.class);
@@ -60,7 +64,7 @@ public class TilescapeModule extends AbstractModule {
 
         // bind renderer factory
         install(new FactoryModuleBuilder().build(RendererFactory.class));
-        // build task factory
+        // bind task factory
         install(new FactoryModuleBuilder().build(TaskFactory.class));
 
     }

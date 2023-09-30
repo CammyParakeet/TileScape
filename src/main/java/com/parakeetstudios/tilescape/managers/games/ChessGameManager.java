@@ -10,6 +10,7 @@ import com.parakeetstudios.tilescape.data.TilescapeConfig;
 import com.parakeetstudios.tilescape.game.BoardGame;
 import com.parakeetstudios.tilescape.game.games.ChessGame;
 import com.parakeetstudios.tilescape.inject.GameFactory;
+import com.parakeetstudios.tilescape.managers.CentralGameRegistry;
 import com.parakeetstudios.tilescape.managers.GameManager;
 import com.parakeetstudios.tilescape.utils.Paralog;
 import org.bukkit.Bukkit;
@@ -25,21 +26,28 @@ public class ChessGameManager implements GameManager, Listener {
 
     private final TilescapePlugin plugin;
     private final TilescapeConfig cfg;
-    private final Map<UUID, ChessGame> activeChessGames = new ConcurrentHashMap<>();
-    private final Map<UUID, UUID> playerInGame = new ConcurrentHashMap<>();
-    private final List<Location> chessLocations;
+    private final CentralGameRegistry gameRegistry;
     private final GameFactory<ChessGame> gameFactory;
+
+    private final Map<UUID, ChessGame> activeChessGames = new ConcurrentHashMap<>();
+    private final Map<UUID, UUID> playersInChessGames = new ConcurrentHashMap<>();
+    private final List<Location> chessLocations;
+
 
     @Inject
     public ChessGameManager(@NotNull TilescapePlugin plugin,
                             @NotNull TilescapeConfig cfg,
+                            @NotNull CentralGameRegistry gameRegistry,
                             @NotNull GameFactory<ChessGame> gameFactory
                             )
     {
         this.cfg = cfg;
         this.plugin = plugin;
-        this.chessLocations = cfg.getChessLocations();
+        this.gameRegistry = gameRegistry;
         this.gameFactory = gameFactory;
+        this.chessLocations = cfg.getChessLocations();
+
+        this.gameRegistry.registerGameManager(this);
     }
 
     @Override
@@ -55,20 +63,20 @@ public class ChessGameManager implements GameManager, Listener {
 
     @Override
     public boolean isPlayerInGame(@NotNull UUID playerID) {
-        return playerInGame.containsKey(playerID);
+        return playersInChessGames.containsKey(playerID);
     }
 
 
     public Optional<BoardGame> getPlayersGame(UUID pid) {
-        if (!playerInGame.containsKey(pid)) return Optional.empty();
+        if (!playersInChessGames.containsKey(pid)) return Optional.empty();
 
-        UUID gameID = playerInGame.get(pid);
+        UUID gameID = playersInChessGames.get(pid);
         return Optional.ofNullable(activeChessGames.get(gameID));
     }
 
     @Override
-    public List<UUID> getAllGamePlayers() {
-        return new ArrayList<>(playerInGame.keySet());
+    public Set<UUID> getAllGamePlayers() {
+        return playersInChessGames.keySet();
     }
 
     @Override

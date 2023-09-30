@@ -7,10 +7,9 @@ import com.parakeetstudios.tilescape.core.selector.BoardSelection;
 import com.parakeetstudios.tilescape.core.tasks.HoverDisplayTask;
 import com.parakeetstudios.tilescape.data.TilescapeConfig;
 import com.parakeetstudios.tilescape.game.BoardGame;
-import com.parakeetstudios.tilescape.game.board.Board;
 import com.parakeetstudios.tilescape.game.piece.Piece;
 import com.parakeetstudios.tilescape.inject.TaskFactory;
-import com.parakeetstudios.tilescape.managers.GameManager;
+import com.parakeetstudios.tilescape.managers.CentralGameRegistry;
 import com.parakeetstudios.tilescape.managers.UtilityManager;
 import com.parakeetstudios.tilescape.utils.Paralog;
 import org.bukkit.Bukkit;
@@ -35,7 +34,7 @@ public class SelectionManager implements UtilityManager, Listener {
 
     private final TilescapePlugin plugin;
     private final TilescapeConfig cfg;
-    private final GameManager gameManager;
+    private final CentralGameRegistry gameRegistry;
     private final TaskFactory taskFactory;
 
     private final Map<UUID, HoverDisplayTask> activeHoverTasks = new ConcurrentHashMap<>();
@@ -52,13 +51,13 @@ public class SelectionManager implements UtilityManager, Listener {
 
     @Inject
     public SelectionManager(@NotNull TilescapePlugin plugin,
-                            @NotNull GameManager gameManager,
+                            @NotNull CentralGameRegistry gameRegistry,
                             @NotNull TaskFactory taskFactory,
                             @NotNull TilescapeConfig cfg)
     {
         this.plugin = plugin;
         this.cfg = cfg;
-        this.gameManager = gameManager;
+        this.gameRegistry = gameRegistry;
         this.taskFactory = taskFactory;
     }
 
@@ -101,7 +100,7 @@ public class SelectionManager implements UtilityManager, Listener {
     }
 
     private Optional<Piece> getSelectedPiece(UUID playerID, Block selected) {
-        Board board = gameManager.getPlayersGame(playerID).orElseThrow().getBoard();
+        //Board board = gameRegistry.g
         //return board.getPieceAt(); TODO method to get boardselection of a block?
         return null;
     }
@@ -114,7 +113,9 @@ public class SelectionManager implements UtilityManager, Listener {
         // if they have no hovers - they aren't in game so return
         if (!currentHovers.containsKey(playerID)) return;
 
-        BoardGame game = gameManager.getPlayersGame(playerID).orElse(null);
+        // retrieve players game if exists - they should here though
+        BoardGame game = gameRegistry.getPlayersGame(playerID).orElse(null);
+
         // maybe later allow this with pre-moving?
         if (game == null || !game.isPlayerTurn(playerID)) return;
 

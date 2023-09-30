@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -40,9 +41,9 @@ public interface GameManager extends Manager {
     boolean isPlayerInGame(@NotNull UUID playerID);
 
 
-    Optional<BoardGame> getPlayersGame(UUID pid);
+    Optional<BoardGame> getPlayersGame(UUID playerID);
 
-    List<UUID> getAllGamePlayers();
+    Set<UUID> getAllGamePlayers();
 
     /**
      * Ends the game session.
