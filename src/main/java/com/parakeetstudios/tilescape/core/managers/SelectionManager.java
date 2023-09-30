@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.parakeetstudios.tilescape.TilescapePlugin;
 import com.parakeetstudios.tilescape.core.events.GameEvents;
 import com.parakeetstudios.tilescape.core.selector.BoardSelection;
+import com.parakeetstudios.tilescape.core.selector.Selection;
 import com.parakeetstudios.tilescape.core.tasks.HoverDisplayTask;
 import com.parakeetstudios.tilescape.data.TilescapeConfig;
 import com.parakeetstudios.tilescape.game.BoardGame;
@@ -37,7 +38,7 @@ public class SelectionManager implements UtilityManager, Listener {
     private final CentralGameRegistry gameRegistry;
     private final TaskFactory taskFactory;
 
-    private final Map<UUID, HoverDisplayTask> activeHoverTasks = new ConcurrentHashMap<>();
+    private final Map<UUID, HoverDisplayTask> delegatedHoverTasks = new ConcurrentHashMap<>();
     private final Map<UUID, Block> lastBlockHovered = new ConcurrentHashMap<>();
     private final Map<UUID, BlockDisplay> currentHovers = new ConcurrentHashMap<>();
     private final Map<UUID, BoardSelection> currentSelections = new ConcurrentHashMap<>();
@@ -64,37 +65,41 @@ public class SelectionManager implements UtilityManager, Listener {
 
     // destroys the players hover-task
     public void clearHoverTask(UUID playerID) {
-        if (!activeHoverTasks.containsKey(playerID)) return;
-        activeHoverTasks.get(playerID).cancel();
-        activeHoverTasks.remove(playerID);
+        delegatedHoverTasks.computeIfPresent(playerID, (key, hover) -> {
+            hover.cancel();
+            return null;
+        });
     }
 
     // cancels the players hover-task
     public void cancelHoverTask(UUID playerID) {
-        if (!activeHoverTasks.containsKey(playerID)) return;
-
-        activeHoverTasks.get(playerID).cancel();
+        HoverDisplayTask hover = delegatedHoverTasks.get(playerID);
+        if (hover != null) hover.cancel();
     }
 
     // starts the players hover-task
     public void startHoverTask(UUID playerID, BoardGame game) {
-        if (!activeHoverTasks.containsKey(playerID)) {
-            activeHoverTasks.put(playerID, taskFactory.createHoverTask(playerID, game));
+        HoverDisplayTask task = delegatedHoverTasks.get(playerID);
+
+        // task must be recreated to schedule if cancelled
+        if (task == null || task.isCancelled()) {
+            task = taskFactory.createHoverTask(playerID, game);
+            delegatedHoverTasks.put(playerID, task);
+            task.runTaskTimer(plugin, 0, 2);
         }
-        activeHoverTasks.get(playerID).runTaskTimer(plugin, 0, 2);
     }
 
 
     // clears the players hover display
     public void clearHover(UUID playerID) {
-        if (!currentHovers.containsKey(playerID)) return;
-
-        currentHovers.get(playerID).remove();
-        currentHovers.remove(playerID);
-        lastBlockHovered.remove(playerID);
+        currentHovers.computeIfPresent(playerID, (key, hover) -> {
+            hover.remove();
+            lastBlockHovered.remove(playerID);
+            return null;
+        });
     }
 
-
+    // update hover to a given block TODO change to interaction entity
     public void updateHover(UUID playerID, Block block) {
         // return if we haven't changed blocks
         if (block.equals(lastBlockHovered.get(playerID))) return;
@@ -107,9 +112,8 @@ public class SelectionManager implements UtilityManager, Listener {
 
 
     public void clearSelection(UUID playerID) {
-        if (currentSelections.containsKey(playerID)) {
-            currentSelections.get(playerID).remove();
-        }
+        Selection selection = currentSelections.get(playerID);
+        if (selection != null) selection.remove();
     }
 
     public void updateSelection(UUID playerID, Color color) {
@@ -167,7 +171,7 @@ public class SelectionManager implements UtilityManager, Listener {
     @EventHandler
     public void onPlayerLeaveGame(GameEvents.PlayerLeaveGameEvent event) {
         UUID playerID = event.getPlayerID();
-        activeHoverTasks.get(playerID).cancel();
+        clearHoverTask(playerID);
     }
 
     @EventHandler
@@ -187,10 +191,15 @@ public class SelectionManager implements UtilityManager, Listener {
 
     @Override
     public void onDisable() {
+        delegatedHoverTasks.values().forEach(HoverDisplayTask::cancel);
+        delegatedHoverTasks.clear();
+
         currentHovers.values().forEach(Entity::remove);
         currentHovers.clear();
+
         currentSelections.values().forEach(BoardSelection::remove);
         currentSelections.clear();
+
         lastBlockHovered.clear();
     }
 }
