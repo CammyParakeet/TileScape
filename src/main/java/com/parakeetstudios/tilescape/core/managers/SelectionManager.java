@@ -61,6 +61,30 @@ public class SelectionManager implements UtilityManager, Listener {
         this.taskFactory = taskFactory;
     }
 
+
+    // destroys the players hover-task
+    public void clearHoverTask(UUID playerID) {
+        if (!activeHoverTasks.containsKey(playerID)) return;
+        activeHoverTasks.get(playerID).cancel();
+        activeHoverTasks.remove(playerID);
+    }
+
+    // cancels the players hover-task
+    public void cancelHoverTask(UUID playerID) {
+        if (!activeHoverTasks.containsKey(playerID)) return;
+
+        activeHoverTasks.get(playerID).cancel();
+    }
+
+    // starts the players hover-task
+    public void startHoverTask(UUID playerID, BoardGame game) {
+        if (!activeHoverTasks.containsKey(playerID)) {
+            activeHoverTasks.put(playerID, taskFactory.createHoverTask(playerID, game));
+        }
+        activeHoverTasks.get(playerID).runTaskTimer(plugin, 0, 2);
+    }
+
+
     // clears the players hover display
     public void clearHover(UUID playerID) {
         if (!currentHovers.containsKey(playerID)) return;
@@ -137,15 +161,19 @@ public class SelectionManager implements UtilityManager, Listener {
     @EventHandler
     public void onPlayerEnterGame(GameEvents.PlayerEnterGameEvent event) {
         UUID playerID = event.getPlayerID();
-        HoverDisplayTask hoverTask = taskFactory.createHoverTask(playerID);
-        hoverTask.runTaskTimer(plugin, 0, 2);
-        activeHoverTasks.put(playerID, hoverTask);
+        startHoverTask(playerID, event.getGame());
     }
 
+    @EventHandler
+    public void onPlayerLeaveGame(GameEvents.PlayerLeaveGameEvent event) {
+        UUID playerID = event.getPlayerID();
+        activeHoverTasks.get(playerID).cancel();
+    }
 
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent event) {
         UUID playerID = event.getPlayer().getUniqueId();
+        clearHoverTask(playerID);
         clearHover(playerID);
         clearSelection(playerID);
         //TODO other storage logic with player who left?

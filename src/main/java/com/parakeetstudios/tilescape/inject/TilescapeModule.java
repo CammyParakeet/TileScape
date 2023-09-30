@@ -11,6 +11,7 @@ import com.parakeetstudios.tilescape.core.managers.SelectionManager;
 import com.parakeetstudios.tilescape.data.TilescapeConfig;
 import com.parakeetstudios.tilescape.game.board.chess.ChessBoard;
 import com.parakeetstudios.tilescape.game.games.ChessGame;
+import com.parakeetstudios.tilescape.game.games.ShogiGame;
 import com.parakeetstudios.tilescape.game.piece.chess.ChessPiece;
 import com.parakeetstudios.tilescape.game.piece.shogi.ShogiPiece;
 import com.parakeetstudios.tilescape.managers.CentralGameRegistry;
@@ -54,6 +55,7 @@ public class TilescapeModule extends AbstractModule {
 
         // bind game classes
         install(new FactoryModuleBuilder().build(new TypeLiteral<GameFactory<ChessGame>>(){}));
+        install(new FactoryModuleBuilder().build(new TypeLiteral<GameFactory<ShogiGame>>(){}));
 
         // bind board classes
         install(new FactoryModuleBuilder().build(new TypeLiteral<BoardFactory<ChessBoard>>(){}));

@@ -8,13 +8,10 @@ import com.parakeetstudios.tilescape.data.TilescapeConfig;
 import com.parakeetstudios.tilescape.game.BoardGame;
 import com.parakeetstudios.tilescape.managers.GameManager;
 import org.bukkit.Bukkit;
-import org.bukkit.FluidCollisionMode;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.RayTraceResult;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -30,8 +27,8 @@ public class HoverDisplayTask extends BukkitRunnable {
 
     @AssistedInject
     public HoverDisplayTask(@Assisted @NotNull UUID playerID,
+                            @Assisted @NotNull BoardGame playersGame,
                             @NotNull SelectionManager selectionManager,
-                            @NotNull GameManager gameManager,
                             @NotNull TilescapeConfig cfg
                             ) {
         this.playerID = playerID;
@@ -42,14 +39,14 @@ public class HoverDisplayTask extends BukkitRunnable {
         this.playerWorld = player.getWorld();
         this.selectionManager = selectionManager;
         // TODO some exception needed here
-        this.playersGame = gameManager.getPlayersGame(playerID).orElseThrow();
+        this.playersGame = playersGame;
         this.maxDistance = cfg.getMaxRaytraceDistance();
     }
 
     @Override
     public void run() {
-        // cancel if they leave game or not their turn
-        if (!player.isOnline() || !playersGame.isPlayerTurn(playerID)) {
+        // TODO put this into listeners instead of actual task?
+        if (!playersGame.isPlayerTurn(playerID)) {
             cancel();
             return;
         }
