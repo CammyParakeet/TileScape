@@ -25,6 +25,10 @@ public class TilescapeConfig {
 
     public double getMaxRaytraceDistance() { return cfg.getDouble("RAY_TRACE_DISTANCE"); }
 
+    public int getDefaultMaxGamePlayers(String game) {
+        return cfg.getInt("MAX_PLAYERS_" + game.toUpperCase());
+    }
+
     public String getDefaultChessStateNotation() {
         return cfg.getString("DEFAULT_CHESS_STATE_NOTATION");
     }
@@ -88,6 +92,10 @@ public class TilescapeConfig {
 
         // get model based on it's color classifier
         String modelName = modelSection.getString("MODEL_" + color.toString());
+        if (modelName == null) {
+            throw new IllegalArgumentException("No material data found for: " + piece.getSymbol());
+        }
+
         Material modelMaterial = Material.getMaterial(modelName);
         if (modelMaterial == null) {
             throw new IllegalArgumentException("Invalid material: " + modelName);

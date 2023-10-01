@@ -18,6 +18,7 @@ import com.parakeetstudios.tilescape.managers.CentralGameRegistry;
 import com.parakeetstudios.tilescape.managers.GameManager;
 import com.parakeetstudios.tilescape.managers.UtilityManager;
 import com.parakeetstudios.tilescape.managers.games.ChessGameManager;
+import com.parakeetstudios.tilescape.managers.games.ChessQueueManager;
 import com.parakeetstudios.tilescape.managers.games.ShogiGameManager;
 
 /**
@@ -52,6 +53,7 @@ public class TilescapeModule extends AbstractModule {
         // bind utility managers
         Multibinder<UtilityManager> utilityManagerBinder = Multibinder.newSetBinder(binder(), UtilityManager.class);
         utilityManagerBinder.addBinding().to(SelectionManager.class);
+        utilityManagerBinder.addBinding().to(ChessQueueManager.class);
 
         // bind game classes
         install(new FactoryModuleBuilder().build(new TypeLiteral<GameFactory<ChessGame>>(){}));
