@@ -122,11 +122,15 @@ public class SelectionManager implements UtilityManager, Listener {
         // check if it has a piece
         Block currentBlock = lastBlockHovered.get(playerID);
         Optional<Piece> hasPiece = getSelectedPiece(playerID, currentBlock);
+        if (hasPiece.isEmpty()) {
+            //TODO doesnt have piece - handle this
+            return;
+        }
 
         clearSelection(playerID);
 
-        //BoardSelection selection = new BoardSelection(currentBlock, color, TODO method to get piece?)
-        //currentSelections.put(playerID, selection);
+        BoardSelection selection = new BoardSelection(currentBlock, color, hasPiece.get());
+        currentSelections.put(playerID, selection);
     }
 
     private Optional<Piece> getSelectedPiece(UUID playerID, Block selected) {

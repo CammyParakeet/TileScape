@@ -6,8 +6,10 @@ import com.parakeetstudios.tilescape.game.piece.PieceColor;
 import com.parakeetstudios.tilescape.utils.Matrix;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +87,13 @@ public class TilescapeConfig {
         PieceColor color = piece.getColor();
 
         // get model based on it's color classifier
-        data.setModel(modelSection.getItemStack("MODEL_" + color.toString()));
+        String modelName = modelSection.getString("MODEL_" + color.toString());
+        Material modelMaterial = Material.getMaterial(modelName);
+        if (modelMaterial == null) {
+            throw new IllegalArgumentException("Invalid material: " + modelName);
+        }
+
+        data.setModel(new ItemStack(modelMaterial));
 
         // create a new transformation - will need better logic in future
         Matrix M = new Matrix();
