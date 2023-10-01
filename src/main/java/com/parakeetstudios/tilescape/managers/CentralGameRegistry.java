@@ -12,7 +12,6 @@ import java.util.UUID;
 public class CentralGameRegistry {
 
     private final Set<GameManager> registeredManagers = new HashSet<>();
-    // consider adjusting storing Player references instead of IDs here?
     private final Set<UUID> allGamePlayers = new HashSet<>();
 
 

@@ -8,6 +8,7 @@ import com.parakeetstudios.tilescape.game.BoardGame;
 import com.parakeetstudios.tilescape.game.board.Board;
 import com.parakeetstudios.tilescape.game.board.chess.ChessBoard;
 import com.parakeetstudios.tilescape.inject.BoardFactory;
+import com.parakeetstudios.tilescape.utils.Paralog;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
@@ -34,6 +35,10 @@ public class ChessGame implements BoardGame {
         this.board = boardFactory.createBoard(gameLocation);
         // join game event for each player
         playerIDs.forEach(id -> Bukkit.getPluginManager().callEvent(new GameEvents.PlayerEnterGameEvent(id, this)));
+
+        build();
+
+        Paralog.info("New game created! " + playerIDs);
     }
 
     @Override

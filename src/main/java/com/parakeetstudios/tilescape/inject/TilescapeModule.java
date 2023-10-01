@@ -15,6 +15,7 @@ import com.parakeetstudios.tilescape.game.games.ShogiGame;
 import com.parakeetstudios.tilescape.game.piece.chess.ChessPiece;
 import com.parakeetstudios.tilescape.game.piece.shogi.ShogiPiece;
 import com.parakeetstudios.tilescape.managers.CentralGameRegistry;
+import com.parakeetstudios.tilescape.managers.CentralQueueRegistry;
 import com.parakeetstudios.tilescape.managers.GameManager;
 import com.parakeetstudios.tilescape.managers.UtilityManager;
 import com.parakeetstudios.tilescape.managers.games.ChessGameManager;
@@ -41,9 +42,6 @@ public class TilescapeModule extends AbstractModule {
     protected void configure() {
         // create single plugin instance
         bind(TilescapePlugin.class).toInstance(plugin);
-
-        // bind central game registry singleton
-        bind(CentralGameRegistry.class).in(Singleton.class);
 
         // bind game managers
         Multibinder<GameManager> gameManagerBinder = Multibinder.newSetBinder(binder(), GameManager.class);
@@ -78,4 +76,10 @@ public class TilescapeModule extends AbstractModule {
     TilescapeConfig provideConfig() {
         return new TilescapeConfig(plugin.getConfig());
     }
+
+    @Provides @Singleton
+    CentralQueueRegistry provideQueueRegistry() { return new CentralQueueRegistry(); }
+
+    @Provides @Singleton
+    CentralGameRegistry provideGameRegistry() { return new CentralGameRegistry(); }
 }

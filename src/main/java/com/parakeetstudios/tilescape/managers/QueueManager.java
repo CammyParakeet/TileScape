@@ -13,23 +13,34 @@ public abstract class QueueManager implements UtilityManager, Listener {
     protected final TilescapeConfig cfg;
     protected final GameManager gameManager;
 
+    protected final String queueName;
     protected final Queue<UUID> waitingPlayers = new LinkedList<>();
     protected final int MAX_PLAYERS;
+    protected boolean isActive;
 
 
     public QueueManager(int MAX_PLAYERS,
+                        String queueName,
                         @NotNull TilescapePlugin plugin,
                         @NotNull TilescapeConfig cfg,
-                        @NotNull GameManager gameManager) {
+                        @NotNull GameManager gameManager,
+                        @NotNull CentralQueueRegistry queueRegistry) {
         this.plugin = plugin;
         this.cfg = cfg;
         this.gameManager = gameManager;
         this.MAX_PLAYERS = MAX_PLAYERS;
+        this.queueName = queueName;
+        queueRegistry.registerQueue(this);
     }
 
+    public void stop() {
+        waitingPlayers.clear();
+        isActive = false;
+    }
 
     public void addPlayerToQueue(UUID playerID) {
         waitingPlayers.add(playerID);
+        checkForMatch();
     }
 
 
@@ -43,4 +54,8 @@ public abstract class QueueManager implements UtilityManager, Listener {
         }
     }
 
+    @Override
+    public String toString() {
+        return queueName.toLowerCase();
+    }
 }

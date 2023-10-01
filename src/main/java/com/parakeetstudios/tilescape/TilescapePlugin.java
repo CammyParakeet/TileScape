@@ -4,13 +4,15 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
-import com.parakeetstudios.tilescape.game.piece.SimplePieceColor;
+import com.parakeetstudios.tilescape.core.commands.debug.JoinGameCmd;
 import com.parakeetstudios.tilescape.inject.TilescapeModule;
+import com.parakeetstudios.tilescape.managers.CentralQueueRegistry;
 import com.parakeetstudios.tilescape.managers.GameManager;
 import com.parakeetstudios.tilescape.managers.UtilityManager;
 import com.parakeetstudios.tilescape.utils.Paralog;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -23,9 +25,6 @@ public class TilescapePlugin extends JavaPlugin {
 
     @Inject
     private Injector injector;
-
-    @Inject
-    private Set<GameManager> gameManagers;
 
     @Inject
     private Set<UtilityManager> utilityManagers;
@@ -50,13 +49,12 @@ public class TilescapePlugin extends JavaPlugin {
         Paralog.info(getName() + " is starting...");
 
         // enable utilities
+        // TODO - should only activate queue-managers that have are enabled in config
         utilityManagers.forEach(UtilityManager::onEnable);
 
-        // enable our game managers - TODO only do ones that config has enabled?
-        // possibly offload this to a factory
-        gameManagers.forEach(GameManager::onEnable);
 
-
+        // temp cmd setup
+        Objects.requireNonNull(getCommand("join")).setExecutor(new JoinGameCmd(injector.getInstance(CentralQueueRegistry.class)));
 
         //TODO
     }
@@ -65,6 +63,7 @@ public class TilescapePlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         Paralog.info(getName() + " is shutting down...");
+        utilityManagers.forEach(UtilityManager::onDisable);
     }
 
 

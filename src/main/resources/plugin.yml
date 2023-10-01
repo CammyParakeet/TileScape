@@ -3,3 +3,7 @@ version: '${version}'
 main: com.parakeetstudios.tilescape.TilescapePlugin
 api-version: 1.20
 load: STARTUP
+commands:
+  join:
+    description: Test joining a queue
+    usage: /<command> <game>
