@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import com.parakeetstudios.tilescape.core.commands.debug.JoinGameCmd;
+import com.parakeetstudios.tilescape.data.TilescapeConfig;
 import com.parakeetstudios.tilescape.inject.TilescapeModule;
 import com.parakeetstudios.tilescape.managers.CentralQueueRegistry;
 import com.parakeetstudios.tilescape.managers.GameManager;
@@ -55,6 +56,9 @@ public class TilescapePlugin extends JavaPlugin {
 
         // temp cmd setup
         Objects.requireNonNull(getCommand("join")).setExecutor(new JoinGameCmd(injector.getInstance(CentralQueueRegistry.class)));
+
+        TilescapeConfig cfg = injector.getInstance(TilescapeConfig.class);
+        Paralog.info(cfg.getChessLocations().toString());
 
         //TODO
     }

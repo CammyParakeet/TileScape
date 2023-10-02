@@ -46,7 +46,7 @@ public class CentralQueueRegistry {
         List<String> activeQs = new ArrayList<>();
         for (QueueManager q : registeredQueues.values()) {
             if (q.isActive) {
-                activeQs.add(q.queueName);
+                activeQs.add(q.queueName.toLowerCase());
             }
         }
         return activeQs;

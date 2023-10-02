@@ -1,10 +1,13 @@
 package com.parakeetstudios.tilescape.core.commands.debug;
 
 import com.google.inject.Inject;
+import com.parakeetstudios.tilescape.TilescapePlugin;
+import com.parakeetstudios.tilescape.data.TilescapeConfig;
 import com.parakeetstudios.tilescape.managers.CentralGameRegistry;
 import com.parakeetstudios.tilescape.managers.CentralQueueRegistry;
 import com.parakeetstudios.tilescape.managers.QueueManager;
 import com.parakeetstudios.tilescape.managers.games.ChessQueueManager;
+import com.parakeetstudios.tilescape.utils.Paralog;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

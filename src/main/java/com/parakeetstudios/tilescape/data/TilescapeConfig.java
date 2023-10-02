@@ -4,15 +4,18 @@ import com.parakeetstudios.tilescape.core.utils.LocationUtils;
 import com.parakeetstudios.tilescape.game.piece.Piece;
 import com.parakeetstudios.tilescape.game.piece.PieceColor;
 import com.parakeetstudios.tilescape.utils.Matrix;
+import com.parakeetstudios.tilescape.utils.Paralog;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class TilescapeConfig {
@@ -41,32 +44,30 @@ public class TilescapeConfig {
         return cfg.getString("DEFAULT_CHESS_MOVE_NOTATION");
     }
 
+
     /**
      * Collect pre-configured chess game locations
      * @return {@link List<>} of {@link Location}
      */
     public List<Location> getChessLocations() {
-        final List<?> locationSections = cfg.getList("CHESS_LOCATIONS");
-        if (locationSections == null) return null;
+        List<Map<?, ?>> locationMaps = cfg.getMapList("CHESS_LOCATIONS");
+        List<Location> locations = new ArrayList<>();
+        World world = Bukkit.getWorld("world");
 
-        List<ConfigurationSection> chessLocSections = locationSections.stream()
-                .filter(ConfigurationSection.class::isInstance)
-                .map(ConfigurationSection.class::cast).toList();
+        for (Map<?, ?> locationMap : locationMaps) {
+            double x = (double) locationMap.get("x");
+            double y = (double) locationMap.get("y");
+            double z = (double) locationMap.get("z");
+            String facingString = (String) locationMap.get("facing");
 
-        List<Location> chessLocations = new ArrayList<>();
+            float yaw = LocationUtils.FacingToYaw(facingString);
 
-        for (ConfigurationSection section : chessLocSections) {
-            double x = section.getDouble("x");
-            double y = section.getDouble("y");
-            double z = section.getDouble("z");
-            float yaw = LocationUtils.FacingToYaw(Objects.requireNonNull(section.getString("facing")));
-
-            Location loc = new Location(Bukkit.getWorld("world"), x, y, z, yaw, 0.0F);
-            chessLocations.add(loc);
+            Location location = new Location(world, x, y, z, yaw, 0.0f);
+            locations.add(location);
         }
-
-        return chessLocations;
+        return locations;
     }
+    
 
     public String getRenderMode() { return cfg.getString("RENDER_MODE"); }
 

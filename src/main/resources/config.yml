@@ -4,6 +4,8 @@ RAY_TRACE_DISTANCE: 7.5
 
 ## CHESS
 
+MAX_PLAYERS_CHESS: 2
+
 # Default notation for chess position state - currently supported:
 # - FEN
 DEFAULT_CHESS_STATE_NOTATION: "FEN"

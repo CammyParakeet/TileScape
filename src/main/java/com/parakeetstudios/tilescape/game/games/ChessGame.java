@@ -29,6 +29,7 @@ public class ChessGame implements BoardGame {
                      @NotNull TilescapeConfig cfg,
                      @NotNull BoardFactory<ChessBoard> boardFactory)
     {
+        Paralog.info("New game created! " + playerIDs);
         this.cfg = cfg;
         this.players = playerIDs;
         this.gameID = UUID.randomUUID();
@@ -38,7 +39,7 @@ public class ChessGame implements BoardGame {
 
         build();
 
-        Paralog.info("New game created! " + playerIDs);
+
     }
 
     @Override
