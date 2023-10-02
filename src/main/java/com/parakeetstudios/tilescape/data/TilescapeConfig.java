@@ -67,7 +67,7 @@ public class TilescapeConfig {
         }
         return locations;
     }
-    
+
 
     public String getRenderMode() { return cfg.getString("RENDER_MODE"); }
 

@@ -6,6 +6,7 @@ import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class QueueManager implements UtilityManager, Listener {
 
@@ -39,7 +40,7 @@ public abstract class QueueManager implements UtilityManager, Listener {
     }
 
     public void addPlayerToQueue(UUID playerID) {
-        waitingPlayers.add(playerID);
+        waitingPlayers.offer(playerID);
         checkForMatch();
     }
 
@@ -49,7 +50,10 @@ public abstract class QueueManager implements UtilityManager, Listener {
 
     public void checkForMatch() {
         if (waitingPlayers.size() >= MAX_PLAYERS) {
-            List<UUID> players = new ArrayList<>(waitingPlayers);
+            List<UUID> players = new ArrayList<>();
+            for (int i = 0; i < MAX_PLAYERS; i++) {
+                players.add(waitingPlayers.poll());
+            }
             gameManager.buildGame(players);
         }
     }
